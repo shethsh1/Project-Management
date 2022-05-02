@@ -73,7 +73,7 @@ export default function AccountMenu() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>
+                <MenuItem disabled>
                 <ListItemIcon>
                     <PersonIcon fontSize="small" /> 
                 </ListItemIcon> 
@@ -87,7 +87,7 @@ export default function AccountMenu() {
                     My projects
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem disabled>
                     <ListItemIcon>
                         <Settings fontSize="small" />
                     </ListItemIcon>
