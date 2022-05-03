@@ -106,11 +106,11 @@ export default function Home() {
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
-              <TableCell align="right">Priority&nbsp;</TableCell>
-              <TableCell align="right">End Date&nbsp;</TableCell>
-              <TableCell align="right">Status&nbsp;</TableCell>
-              <TableCell align="right">Progress&nbsp;</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell >Priority&nbsp;</TableCell>
+              <TableCell >End Date&nbsp;</TableCell>
+              <TableCell >Status&nbsp;</TableCell>
+              <TableCell >Progress&nbsp;</TableCell>
+              <TableCell align="right" ></TableCell>
             </TableRow>
           </TableHead>
 
@@ -124,18 +124,18 @@ export default function Home() {
                 <TableCell component="th" scope="row">
                   {row.title}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell >
                   {row.priority}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell >
                   Today
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell >
                   {row.status}
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell >
                   {row.progress}
                 </TableCell>
 
