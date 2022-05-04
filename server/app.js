@@ -39,6 +39,7 @@ app.use(function (req, res, next) {
 });
 
 // require api routes here after I create them
+/* e.g. /api/users/:username or /auth/login or /auth/logout */
 app.use("/auth", require("./routes/auth"));
 app.use("/api", require("./routes/api"));
 

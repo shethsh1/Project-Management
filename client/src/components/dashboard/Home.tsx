@@ -119,7 +119,7 @@ export default function Home() {
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
             ).map((row) => (
-              <TableRow  sx={{width: 'auto'}} key={row.id}>
+              <TableRow key={row.id}>
 
                 <TableCell component="th" scope="row">
                   {row.title}

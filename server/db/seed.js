@@ -1,12 +1,45 @@
 const db = require("./db");
-const { User } = require("./models");
-const Conversation = require("./models/conversation");
-const Message = require("./models/message");
+const { User, Project } = require("./models");
+
 
 async function seed() {
   await db.sync({ force: true });
   console.log("db synced!");
 
+  const shaahid = await User.create({
+    username: "shaahid",
+    email: "thomas@email.com",
+    password: "123456",
+    photoUrl:
+      "https://res.cloudinary.com/dmlvthmqr/image/upload/v1607914467/messenger/thomas_kwzerk.png",
+  });
+
+  // new Date().toISOString()
+  const projectOne = await Project.create({
+    createdBy: shaahid.id,
+    title: "Test",
+    description: "Test",
+    endDate: "8/3/2022",
+    priority: "high",
+    status: "Completed",
+    progress: 100,
+    favorite: true
+
+  })
+
+  await shaahid.addProject(projectOne)
+  console.log(shaahid)
+
+
+  
+
+
+  
+
+
+
+
+  /*
   const thomas = await User.create({
     username: "thomas",
     email: "thomas@email.com",
@@ -52,6 +85,7 @@ async function seed() {
   ]);
 
   console.log(`seeded users and messages`);
+  */
 }
 
 async function runSeed() {
