@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+const cors = require('cors')
 const express = require("express");
 const { join } = require("path");
 const logger = require("morgan");
@@ -7,6 +8,7 @@ const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const db = require("./db");
 const { User } = require("./db/models");
+
 // create store for sessions to persist in database
 const sessionStore = new SequelizeStore({ db });
 
@@ -14,6 +16,7 @@ const { json, urlencoded } = express;
 
 const app = express();
 
+app.use(cors())
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));

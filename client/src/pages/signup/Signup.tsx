@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import {
   Grid,
   Box,
@@ -8,18 +8,19 @@ import {
   FormControl,
   TextField,
   InputAdornment,
-  Divider
+  Divider,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import Sidebackground from '../../components/login/SideBackground'
 import LinksHeader from '../../components/login/LinksHeader'
+import { useAppSelector, useAppDispatch } from '../../redux/hooks'
+import { authRegister } from '../../redux/slices/authSlice'
+import type { user as userType } from '../../redux/slices/authSlice'
 
 
 
 const classes = {
-  root: {
-    height: '100vh',
-    minWidth: '300px'
-  },
   bgContainer: {
     display: 'block',
 
@@ -90,13 +91,36 @@ const classes = {
 
 };
 
-
-
 const Signup = () => {
+
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(state => state.auth.user)
+
+  const onSubmit = async (event: any) => {
+    event.preventDefault()
+    const form = event.target
+    const username: string = form.username.value
+    const email: string = form.email.value
+    const password: string = form.password.value
+    await dispatch(authRegister({ username, email, password })).unwrap()
+  }
+
+  useEffect(() => {
+    if(user && (user as userType).id) {
+      navigate("/")
+    }
+
+  }, [user, navigate])
+
+
 
 
   return (
-    <Grid container sx={classes.root}>
+    <Grid container sx={{
+      height: '100vh',
+      minWidth: '300px'
+    }}>
 
       <Grid item md={5} sx={{
           display: {xs: 'none', md: 'block'}
@@ -104,14 +128,12 @@ const Signup = () => {
         <Sidebackground />
       </Grid>
 
-
-
-
       <Grid container item xs={12} md={7} sx={classes.formContainer}>
+
 
           <LinksHeader text="Already have an account?" link="/login" buttonText="Login" />
 
-        <Box component="form" sx={classes.textFieldContainer}>
+        <Box component="form" sx={classes.textFieldContainer} onSubmit={onSubmit}>
 
           <Typography variant="h4" gutterBottom sx={classes.title}>
             Create an account.

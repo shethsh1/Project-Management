@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Link as DomLink } from 'react-router-dom';
+
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Grid,
   Box,
@@ -8,10 +9,17 @@ import {
   FormControl,
   TextField,
   InputAdornment,
-  Divider
+  Divider,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import Sidebackground from '../../components/login/SideBackground'
 import LinksHeader from '../../components/login/LinksHeader'
+import { useAppSelector, useAppDispatch } from '../../redux/hooks'
+import { authLogin, error, user } from '../../redux/slices/authSlice'
+import type { user as userType } from '../../redux/slices/authSlice'
+
+
 
 
 
@@ -93,25 +101,41 @@ const classes = {
 
 
 const Login = () => {
+  
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(state => state.auth.user)
+
+  const onSubmit = async (event: any) => {
+    event.preventDefault()
+    const form = event.target
+    const username: string = form.username.value
+    const password: string = form.password.value
+    await dispatch(authLogin({ username, password })).unwrap()
+  }
+
+  useEffect(() => {
+    if(user && (user as userType).id) {
+      navigate("/")
+    }
+
+  }, [user, navigate])
+
 
 
   return (
     <Grid container sx={classes.root}>
 
       <Grid item md={5} sx={{
-          display: {xs: 'none', md: 'block'}
+        display: { xs: 'none', md: 'block' }
       }}>
         <Sidebackground />
       </Grid>
 
-
-
-
       <Grid container item xs={12} md={7} sx={classes.formContainer}>
+        <LinksHeader text="Don't have an account?" link="/signup" buttonText="Create account" />
 
-          <LinksHeader text="Don't have an account?" link="/signup" buttonText="Create account" />
-
-        <Box component="form" sx={classes.textFieldContainer}>
+        <Box component="form" sx={classes.textFieldContainer} onSubmit={onSubmit}>
 
           <Typography variant="h4" gutterBottom sx={classes.title}>
             Welcome back!
