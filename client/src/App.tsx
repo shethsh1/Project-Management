@@ -1,28 +1,22 @@
+// @ts-nocheck
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css'
-import { Routes, BrowserRouter } from "react-router-dom";
-import { Route } from 'react-router'
-import Dashboard from './pages/dashboard/Dashboard'
-import Project from './pages/project/Project'
-import Login from './pages/login/Login'
-import Signup from './pages/signup/Signup'
+import Routes from './routes'
+import axios from 'axios';
+
+axios.interceptors.request.use(async function (config) {
+  const token  = localStorage.getItem('messenger-token');
+  config.headers['x-access-token'] = token;
+
+  return config;
+});
+
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-
-        <Route path="/" element={<Dashboard />}></Route>
-        <Route path="/project/:id" element={<Project />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-        
-
-
-      </Routes>
-
-      
-
+      <Routes />
     </BrowserRouter>
   );
 }

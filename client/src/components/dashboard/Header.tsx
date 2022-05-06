@@ -5,8 +5,9 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
 import constants from '../../constants/Constants' 
 import AccountMenu from './AccountMenu'
-import Login from './Login'
-
+import {useAppDispatch, useAppSelector} from '../../redux/hooks'
+import type { user } from '../../redux/slices/authSlice'
+import { authLogout } from '../../redux/slices/authSlice'
 const { drawerWidth } = constants
 
 
@@ -39,6 +40,17 @@ const AppBar = styled(MuiAppBar, {
   }));
 
 export default function Header({open, handleDrawerOpen} : props) {
+  const user = useAppSelector(state => state.auth.user) as user
+  const dispatch = useAppDispatch()
+
+  const handleLogout = async () => {
+    if(user && user.id) {
+      console.log("reached-logout")
+      await dispatch(authLogout(user.id)).unwrap()
+    }
+  }
+
+
   return (
     <AppBar position="fixed" open={open}>
     <Toolbar>
@@ -61,7 +73,7 @@ export default function Header({open, handleDrawerOpen} : props) {
           justifyContent: 'flex-end'
       }}>
 
-        <AccountMenu />
+        <AccountMenu handleLogout={handleLogout} photoUrl={user.photoUrl}  />
 
 
 

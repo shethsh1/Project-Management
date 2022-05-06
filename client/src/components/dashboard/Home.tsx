@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,9 +7,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { AppBar, Typography, Box, Container, TablePagination, TableFooter, IconButton } from '@mui/material'
+import { 
+  Typography, 
+  TablePagination, 
+  TableFooter, 
+  IconButton, 
+  Box, 
+  Button 
+} from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { useAppSelector } from '../../redux/hooks'
+import type { user } from '../../redux/slices/authSlice'
+import CreateModalForm from '../../components/project/CreateModalForm'
 
 interface projectObject {
   id: number,
@@ -70,8 +80,10 @@ const rows: projectObject[] = [
 ];
 
 export default function Home() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const user = useAppSelector(state => state.auth.user) as user
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -86,31 +98,56 @@ export default function Home() {
     setPage(0);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   return (
     <>
 
-      <Typography variant="h4">
-        Welcome back bob!
-      </Typography>
+      <CreateModalForm open={open} handleClose={handleClose}/>
 
-      <Typography variant="caption" sx={{ opacity: 0.7 }}>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <Typography variant="h4">
+          Welcome back {user.username}
+        </Typography>
+
+        <Button onClick={handleClickOpen}>Create new project</Button>
+        
+
+
+
+      </Box>
+
+
+
+      <Typography variant="caption" sx={{ opacity: 0.7}}>
         4 projects, 3 completed, 0 in progress, 1 not active
       </Typography>
 
 
 
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{mt: 5}}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell padding="checkbox"></TableCell>
               <TableCell>Title</TableCell>
-              <TableCell >Priority&nbsp;</TableCell>
-              <TableCell >End Date&nbsp;</TableCell>
-              <TableCell >Status&nbsp;</TableCell>
-              <TableCell >Progress&nbsp;</TableCell>
-              <TableCell align="right" ></TableCell>
+              <TableCell align="center">Priority&nbsp;</TableCell>
+              <TableCell align="center">End Date&nbsp;</TableCell>
+              <TableCell align="center">Status&nbsp;</TableCell>
+              <TableCell align="center" >Progress&nbsp;</TableCell>
+              <TableCell padding="checkbox" ></TableCell>
             </TableRow>
           </TableHead>
 
@@ -122,24 +159,30 @@ export default function Home() {
               <TableRow key={row.id}>
 
                 <TableCell component="th" scope="row">
+                  <IconButton>
+                    <StarBorderIcon />
+                  </IconButton>
+                </TableCell>
+
+                <TableCell component="th" scope="row">
                   {row.title}
                 </TableCell>
-                <TableCell >
+                <TableCell align="center">
                   {row.priority}
                 </TableCell>
-                <TableCell >
+                <TableCell align="center">
                   Today
                 </TableCell>
 
-                <TableCell >
+                <TableCell align="center">
                   {row.status}
                 </TableCell>
 
-                <TableCell >
+                <TableCell align="center">
                   {row.progress}
                 </TableCell>
 
-                <TableCell align="right">
+                <TableCell align="center">
                   <IconButton>
                     <MoreVertIcon />
                   </IconButton>

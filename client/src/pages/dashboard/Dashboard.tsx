@@ -8,6 +8,10 @@ import Home from '../../components/dashboard/Home'
 import SidebarContainer from '../../components/dashboard/SidebarContainer'
 import Constants from '../../constants/Constants'
 
+import {useAppDispatch, useAppSelector} from '../../redux/hooks'
+import type { user } from '../../redux/slices/authSlice'
+import { authLogout } from '../../redux/slices/authSlice'
+
 const { drawerWidth } = Constants
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -43,6 +47,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Dashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const user = useAppSelector(state => state.auth.user) as user
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -51,6 +57,10 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
+
+
 
   return (
     <Box sx={{ display: 'flex' }}>
