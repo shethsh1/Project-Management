@@ -73,7 +73,7 @@ export default function Header({open, handleDrawerOpen} : props) {
           justifyContent: 'flex-end'
       }}>
 
-        <AccountMenu handleLogout={handleLogout}  />
+        <AccountMenu handleLogout={handleLogout} photoUrl={user.photoUrl}  />
 
 
 

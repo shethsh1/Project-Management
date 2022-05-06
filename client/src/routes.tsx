@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from './redux/hooks'
 import { tokenLogin } from './redux/slices/authSlice'
 import type { error, user } from './redux/slices/authSlice'
 import SnackBarError from './components/login/SnackBarError'
+import { Navigate } from 'react-router-dom';
 
 
 
@@ -28,17 +29,17 @@ export default function Routes() {
         token()
 
     }, [dispatch])
-    
+
     useEffect(() => {
         if ((user as error)?.error) {
             setErrorMessage((user as error).error);
             setSnackBarOpen(true);
         }
-      }, [(user as error)?.error]);
+    }, [(user as error)?.error]);
 
 
 
-    if(isFetching) {
+    if (isFetching) {
         return <div>Loading...</div>
     }
 
@@ -48,20 +49,40 @@ export default function Routes() {
 
     return (
         <>
-      {snackBarOpen && (
-        <SnackBarError
-          setSnackBarOpen={setSnackBarOpen}
-          errorMessage={errorMessage}
-          snackBarOpen={snackBarOpen}
-        />
-      )}
-      <DomRoutes>
-        <Route path="/" element={<Dashboard />}></Route>
-        <Route path="/project/:id" element={<Project />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-          
-      </DomRoutes>
+            {snackBarOpen && (
+                <SnackBarError
+                    setSnackBarOpen={setSnackBarOpen}
+                    errorMessage={errorMessage}
+                    snackBarOpen={snackBarOpen}
+                />
+            )}
+            <DomRoutes>
+
+                {(user as user)?.id ?
+                    <>
+                        <Route path="/" element={<Dashboard />}></Route>
+                        <Route path="/project/:id" element={<Project />}></Route>
+                    </>
+                    : <>
+                        <Route path="/login" element={<Login />}></Route>
+                        <Route path="/signup" element={<Signup />}></Route>
+                    </>
+
+                }
+
+                {
+                (user as user)?.id ?
+
+                    <Route path='*' element={<Navigate to='/' />} />
+
+                    : <Route path='*' element={<Navigate to='/signup' />} />
+
+                } 
+
+
+
+
+            </DomRoutes>
 
 
 

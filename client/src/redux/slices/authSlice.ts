@@ -4,7 +4,9 @@ import axios from "axios"
 
 export type user = {
     id: number,
-    token: string
+    token: string,
+    username: string,
+    photoUrl: string
 }
 
 export type error = {
@@ -56,7 +58,7 @@ export const authRegister = createAsyncThunk<
 )
 
 
-export const tokenLogin = createAsyncThunk<user,any,{ rejectValue: error }> (
+export const tokenLogin = createAsyncThunk<user, any, { rejectValue: error }>(
     'auth/user',
     async (_, { rejectWithValue }) => {
         try {
@@ -69,14 +71,14 @@ export const tokenLogin = createAsyncThunk<user,any,{ rejectValue: error }> (
     }
 )
 
-export const authLogout = createAsyncThunk<number, number, {rejectValue: error}> (
+export const authLogout = createAsyncThunk<number, number, { rejectValue: error }>(
     'auth/logout',
-    async (id, { rejectWithValue}) => {
+    async (id, { rejectWithValue }) => {
         try {
             await axios.delete("http://localhost:3001/auth/logout");
             return id
 
-        } catch (err : any) {
+        } catch (err: any) {
             return rejectWithValue(err.response.data)
         }
     }
@@ -98,11 +100,13 @@ export const authSlice = createSlice({
 
         // LOGIN
         builder.addCase(authLogin.fulfilled, (state: authState, action: PayloadAction<user>) => {
-            const { id, token } = action.payload
+            const { id, token, username, photoUrl } = action.payload
             localStorage.setItem("messenger-token", token)
             state.user = {
                 id: id,
-                token: token
+                token: token,
+                username: username,
+                photoUrl: photoUrl
             }
 
         })
@@ -122,7 +126,6 @@ export const authSlice = createSlice({
         })
         builder.addCase(authRegister.rejected, (state: authState, action) => {
             state.user = action.payload!
-
         })
 
         //Token
@@ -130,10 +133,12 @@ export const authSlice = createSlice({
             state.isFetching = true
         })
         builder.addCase(tokenLogin.fulfilled, (state, action) => {
-            const {id, token} = action.payload
+            const { id, token, username, photoUrl } = action.payload
             state.user = {
                 id: id,
-                token: token
+                token: token,
+                username: username,
+                photoUrl: photoUrl
             }
             state.isFetching = false
         })

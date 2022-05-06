@@ -48,7 +48,7 @@ export default function Dashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const user = useAppSelector(state => state.auth.user) as user
-  const dispatch = useAppDispatch()
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -58,11 +58,7 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-  const handleLogout = async () => {
-    if(user && user.id) {
-      await dispatch(authLogout(user.id)).unwrap()
-    }
-  }
+
 
 
 

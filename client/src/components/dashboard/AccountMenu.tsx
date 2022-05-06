@@ -14,10 +14,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 
 type props = {
-    handleLogout: () => void
+    handleLogout: () => void,
+    photoUrl: string
 }
 
-export default function AccountMenu({handleLogout} : props) {
+export default function AccountMenu({handleLogout, photoUrl} : props) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -38,7 +39,7 @@ export default function AccountMenu({handleLogout} : props) {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar src="https://res.cloudinary.com/dudegkgw9/image/upload/v1648425240/1_yfcyk3.jpg" />
+                        <Avatar src={photoUrl} />
                     </IconButton>
                 </Tooltip>
             </Box>
