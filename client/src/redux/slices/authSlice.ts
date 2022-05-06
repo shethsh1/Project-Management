@@ -1,6 +1,7 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+const API_URL = process.env.REACT_APP_API_HOST_URL || ""
 
 export type user = {
     id: number,
@@ -28,7 +29,7 @@ export const authLogin = createAsyncThunk<
     'auth/login',
     async (credentials: { username: string, password: string }, { rejectWithValue }) => {
         try {
-            const response = await axios.post("http://localhost:3001/auth/login", credentials)
+            const response = await axios.post(`${API_URL}/auth/login`, credentials)
             return response.data
 
         } catch (err: any) {
@@ -48,7 +49,7 @@ export const authRegister = createAsyncThunk<
     'auth/register',
     async (credentials, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post("http://localhost:3001/auth/register", credentials);
+            const { data } = await axios.post(`${API_URL}/auth/register`, credentials);
             return data
         } catch (err: any) {
             const error: error = err.response.data || { error: "Server error" }
@@ -62,7 +63,7 @@ export const tokenLogin = createAsyncThunk<user, any, { rejectValue: error }>(
     'auth/user',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get("http://localhost:3001/auth/user");
+            const { data } = await axios.get(`${API_URL}/auth/user`);
             return data
         } catch (err: any) {
             const error: error = err.response.data || { error: "Server error" }
@@ -75,7 +76,7 @@ export const authLogout = createAsyncThunk<number, number, { rejectValue: error 
     'auth/logout',
     async (id, { rejectWithValue }) => {
         try {
-            await axios.delete("http://localhost:3001/auth/logout");
+            await axios.delete(`${API_URL}/auth/logout`);
             return id
 
         } catch (err: any) {
@@ -158,6 +159,8 @@ export const authSlice = createSlice({
         })
     }
 })
+
+
 
 // export const { setUser } = authSlice.actions
 
