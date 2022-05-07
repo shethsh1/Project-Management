@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, IconButton, MenuItem, ListItemIcon, Typography, ListItemText } from '@mui/material'
+import { Box, IconButton, MenuItem } from '@mui/material'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -12,8 +12,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { createProject } from '../../redux/slices/projectSlice'
 import type { user } from '../../redux/slices/authSlice'
-
-
 
 
 
@@ -30,6 +28,7 @@ export default function CreateModalForm({ open, handleClose }: props) {
   const dispatch = useAppDispatch()
 
   const onSubmit = (event: any) => {
+
     event.preventDefault()
     const form = event.target
     const title = form.title.value
@@ -48,13 +47,21 @@ export default function CreateModalForm({ open, handleClose }: props) {
     }
 
     dispatch(createProject(projectObject))
+    form.reset()
+    closeModal()
+  }
 
+  const closeModal = () => {
+    setStatus("Not Active")
+    setPriority("Low")
+    setDate(new Date())
+    handleClose()
 
   }
 
   return (
 
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={closeModal}>
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
@@ -170,7 +177,7 @@ export default function CreateModalForm({ open, handleClose }: props) {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
 
               <Button type="submit" sx={{ color: 'green' }}>Create</Button>
-              <Button onClick={handleClose} sx={{ color: 'red' }}>Close</Button>
+              <Button onClick={() => closeModal()} sx={{ color: 'red' }}>Close</Button>
             </Box>
 
 

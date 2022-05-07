@@ -118,9 +118,39 @@ router.get("/", async (req, res, next) => {
 
     res.status(200).json(projects)
 
+  } catch (error) {
+    next(error);
+  }
+});
 
 
+// delete project
+router.delete("/:id", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
 
+    const id = req.user.id
+    const projectId = req.params.id
+    const check = await User_Project.findOne({
+      where: {
+        userId: id,
+        projectId: projectId
+      },
+    })
+
+    if(check === null) {
+      return res.sendStatus(403)
+    }
+
+    await Project.destroy({
+      where: {
+        id: projectId
+      }
+    })
+
+    res.sendStatus(204)
 
   } catch (error) {
     next(error);
