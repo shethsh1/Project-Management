@@ -20,7 +20,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import type { user } from '../../redux/slices/authSlice'
-import CreateModalForm from '../../components/project/CreateModalForm'
+import CreateModalForm from './CreateModalForm'
 import type { projectObj } from '../../redux/slices/projectSlice'
 import moment from 'moment';
 import PriorityCell from './PriorityCell'

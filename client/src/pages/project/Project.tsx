@@ -8,7 +8,7 @@ import Header from '../../components/dashboard/Header'
 import Home from '../../components/dashboard/Home'
 import SidebarContainer from '../../components/dashboard/SidebarContainer'
 import Constants from '../../constants/Constants'
-
+import Trello from '../../components/trelloboard/Trello'
 
 const { drawerWidth } = Constants
 
@@ -63,7 +63,8 @@ export default function Project() {
             <SidebarContainer open={open} handleDrawerClose={handleDrawerClose} />
             <Main open={open}>
                 <DrawerHeader />
-                {id}
+                <Trello />
+                 
             </Main>
         </Box>
     );

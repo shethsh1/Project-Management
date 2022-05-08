@@ -9,11 +9,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import type { user } from '../../redux/slices/authSlice'
-import CreateModalForm from '../../components/project/CreateModalForm'
+import CreateModalForm from '../projecttable/CreateModalForm'
 import type { projectObj } from '../../redux/slices/projectSlice'
 import { getProjects } from '../../redux/slices/projectSlice'
 import CircularProgress from '@mui/material/CircularProgress';
-import ProjectTable from '../project/ProjectTable'
+import ProjectTable from '../projecttable/ProjectTable'
 
 export default function Home() {
   const [open, setOpen] = useState(false);
