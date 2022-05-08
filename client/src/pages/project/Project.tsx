@@ -63,8 +63,8 @@ export default function Project() {
             <SidebarContainer open={open} handleDrawerClose={handleDrawerClose} />
             <Main open={open}>
                 <DrawerHeader />
-                <Trello />
-                 
+                <Trello id={parseInt(id as string, 10) as number} />
+
             </Main>
         </Box>
     );

@@ -1,65 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Typography,
     Box
 } from '@mui/material'
 import Column from './Column'
 import type { itemInterface, statusInterface } from '../../redux/slices/taskSlice'
+import { getTasks } from '../../redux/slices/taskSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 
-const data: itemInterface[] = [
-    {
-        id: 1,
-        statusId: 1,
-        type: "Bug Fix",
-        content: "Fill out human interest distribution form",
-        userId: 1
-    },
-    {
-        id: 2,
-        statusId: 1,
-        type: "Bug Fix",
-        content: "Get an anniversary gift",
-        userId: 1
-    },
-    {
-        id: 3,
-        type: "Bug Fix",
-        statusId: 1,
-        content: "Call the bank to talk about investments",
-        userId: 1
-    },
-    {
-        id: 4,
-        statusId: 1,
-        type: "Bug Fix",
-        content: "Finish reading Intro to UI/UX",
-        userId: 1
+
+
+type props = {
+    id: number
+}
+
+export default function Trello({ id }: props) {
+    const { tasks, statuses, isFetching } = useAppSelector(state => state.task)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getTasks(id))
+
+    }, [])
+
+    useEffect(() => {
+        console.log(tasks)
+    }, [tasks])
+
+    if (isFetching) {
+        return <Box>Loading...</Box>
     }
-];
-
-export const statuses: statusInterface[] = [
-    {
-        id: 1,
-        name: "open",
-    },
-    {
-        id: 2,
-        name: "in progress",
-    },
-    {
-        id: 4,
-        name: "in review",
-
-    },
-    {
-        id: 4,
-        name: "done",
-    }
-];
 
 
 
-export default function Trello() {
+
+
+
 
     return (
         <Box sx={{
