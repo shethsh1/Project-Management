@@ -52,8 +52,8 @@ export default function Trello({ id }: props) {
                 gap: '20px'
             }}>
                 {statuses.map((status: statusInterface) => {
-
-                    return <Column key={status.id} tasks={tasks} title={status.name} statusId={status.id} />
+                    const atasks = tasks.map((task, idx) => { return { task, idx } })
+                    return <Column key={status.id} tasks={atasks} title={status.name} statusId={status.id} />
                 })}
 
 

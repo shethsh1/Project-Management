@@ -13,7 +13,10 @@ import { useAppDispatch } from '../../redux/hooks'
 
 type props = {
     title: string,
-    tasks: itemInterface[],
+    tasks: {
+        task: itemInterface,
+        idx: number
+    }[],
     statusId: number
 }
 
@@ -58,7 +61,7 @@ export default function Column({ title, tasks, statusId }: props) {
 
             </Box>
 
-            {tasks.map((task, idx) => {
+            {tasks.map(({ task, idx }) => {
                 if (task.statusId === statusId) {
                     return <Card index={idx} key={task.id} task={task} />
                 }

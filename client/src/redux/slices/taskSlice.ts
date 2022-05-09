@@ -123,15 +123,7 @@ export const taskSlice = createSlice({
                 return item
             })
         },
-        moveItem: (state, action: PayloadAction<[number, number]>) => {
-            const [dragIndex, hoverIndex] = action.payload
-            const task: itemInterface = state.tasks[dragIndex]
-            const hoverTask: itemInterface = state.tasks[hoverIndex]
-            const newItems: itemInterface[] = state.tasks.filter((i, idx) => idx !== dragIndex)
-            task.statusId = hoverTask.statusId
-            state.tasks = [...newItems.slice(0, hoverIndex), task, ...newItems.slice(hoverIndex)]
 
-        }
 
 
     },
@@ -155,6 +147,6 @@ export const taskSlice = createSlice({
 
 
 //export const { create, update, deleteP } = projectSlice.actions
-export const { onDrop, moveItem } = taskSlice.actions
+export const { onDrop } = taskSlice.actions
 
 export default taskSlice.reducer
