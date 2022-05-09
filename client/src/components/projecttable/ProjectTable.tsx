@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -36,6 +37,7 @@ type props = {
 }
 
 export default function ProjectTable({ projects }: props) {
+  console.log(projects)
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
 
@@ -59,89 +61,89 @@ export default function ProjectTable({ projects }: props) {
 
 
 
-    <TableContainer component={Paper} sx={{ flex: 1 }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell padding="checkbox"></TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell align="center">Priority&nbsp;</TableCell>
-            <TableCell align="center">End Date&nbsp;</TableCell>
-            <TableCell align="center">Status&nbsp;</TableCell>
-            <TableCell align="center" >Progress&nbsp;</TableCell>
-            <TableCell padding="checkbox" ></TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {(rowsPerPage > 0
-            ? projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : projects
-          ).map((row) => (
-            <TableRow key={row.id}>
-
-              <TableCell component="th" scope="row">
-                <UpdateFavorites favorite={row.favorite} id={row.id as number}/>
-              </TableCell>
-
-              <TableCell component="th" scope="row">
-                {row.title}
-              </TableCell>
-              <TableCell align="center">
-
-                <PriorityCell  priority={row.priority} id={row.id as number}/>
-
-
-              </TableCell>
-              <TableCell align="center">
-                <DateCell endDate={row.endDate} id={row.id as number} />
-              </TableCell>
-
-              <TableCell align="center">
-                <StatusCell status={row.status} id={row.id as number} />
-              </TableCell>
-
-              <TableCell align="center">
-                <ProgressCell progress={row.progress} id={row.id as number} />
-              </TableCell>
-
-              <TableCell align="center">
-                <TableMenu id={row.id as number} />
-
-              </TableCell>
-
+      <TableContainer component={Paper} sx={{ flex: 1 }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox"></TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell align="center">Priority&nbsp;</TableCell>
+              <TableCell align="center">End Date&nbsp;</TableCell>
+              <TableCell align="center">Status&nbsp;</TableCell>
+              <TableCell align="center" >Progress&nbsp;</TableCell>
+              <TableCell padding="checkbox" ></TableCell>
             </TableRow>
-          ))}
+          </TableHead>
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+          <TableBody>
+            {(rowsPerPage > 0
+              ? projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : projects
+            ).map((row) => (
+              <TableRow key={row.id}>
+
+                <TableCell component="th" scope="row">
+                  <UpdateFavorites favorite={row.favorite} id={row.id as number} />
+                </TableCell>
+
+                <TableCell component="th" scope="row">
+                  <Link to={`/project/${row.id}`}>{row.title}</Link>
+                </TableCell>
+                <TableCell align="center">
+
+                  <PriorityCell priority={row.priority} id={row.id as number} />
+
+
+                </TableCell>
+                <TableCell align="center">
+                  <DateCell endDate={row.endDate} id={row.id as number} />
+                </TableCell>
+
+                <TableCell align="center">
+                  <StatusCell status={row.status} id={row.id as number} />
+                </TableCell>
+
+                <TableCell align="center">
+                  <ProgressCell progress={row.progress} id={row.id as number} />
+                </TableCell>
+
+                <TableCell align="center">
+                  <TableMenu id={row.id as number} />
+
+                </TableCell>
+
+              </TableRow>
+            ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+
+                colSpan={6}
+                count={projects.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+              />
             </TableRow>
-          )}
-
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-
-              colSpan={6}
-              count={projects.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-            />
-          </TableRow>
 
 
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableFooter>
+        </Table>
+      </TableContainer>
     </>
   )
 }

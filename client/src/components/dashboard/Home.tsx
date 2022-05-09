@@ -18,7 +18,8 @@ import ProjectTable from '../projecttable/ProjectTable'
 export default function Home() {
   const [open, setOpen] = useState(false);
   const user = useAppSelector(state => state.auth.user) as user
-  const { projects, projectFetching } = useAppSelector(state => state.project)
+  const projects = useAppSelector(state => state.project.projects)
+  const projectFetching = useAppSelector(state => state.project.projectFetching)
   const dispatch = useAppDispatch()
 
   const handleClickOpen = () => {
@@ -67,7 +68,7 @@ export default function Home() {
           height: '100vh',
           width: '100%'
         }}>
-            <CircularProgress  />
+          <CircularProgress />
 
         </Box>
         :

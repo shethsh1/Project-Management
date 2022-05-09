@@ -8,7 +8,7 @@ export const store = configureStore({
     reducer: {
         auth: authReducer,
         project: projectReducer,
-        task: taskReducer
+        task: taskReducer,
     },
     devTools: true,
 })

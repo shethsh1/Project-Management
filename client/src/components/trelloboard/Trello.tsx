@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Typography,
     Box
@@ -8,34 +8,30 @@ import type { itemInterface, statusInterface } from '../../redux/slices/taskSlic
 import { getTasks } from '../../redux/slices/taskSlice'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 
-
-
 type props = {
     id: number
 }
 
 export default function Trello({ id }: props) {
-    const { tasks, statuses, isFetching } = useAppSelector(state => state.task)
+    const [fetching, setFetching] = useState(true)
+    const { tasks, statuses } = useAppSelector(state => state.task)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(getTasks(id))
+        const fetch = async () => {
+            await dispatch(getTasks(id)).unwrap()
+            setFetching(false)
+        }
+
+        fetch()
 
     }, [])
 
-    useEffect(() => {
-        console.log(tasks)
-    }, [tasks])
 
-    if (isFetching) {
+
+    if (fetching) {
         return <Box>Loading...</Box>
     }
-
-
-
-
-
-
 
     return (
         <Box sx={{
@@ -55,12 +51,12 @@ export default function Trello({ id }: props) {
                 mt: 2,
                 gap: '20px'
             }}>
+                {statuses.map((status: statusInterface) => {
 
-                <Column title={"open"} />
-                <Column title={"Review"} />
-                <Column title={"Closed"} />
-                <Column title={"Done"} />
-                <Column title={"Done"} />
+                    return <Column key={status.id} tasks={tasks} title={status.name} statusId={status.id} />
+                })}
+
+
 
 
 

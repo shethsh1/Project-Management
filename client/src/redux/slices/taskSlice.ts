@@ -6,6 +6,7 @@ const API_URL = process.env.REACT_APP_API_HOST_URL || ""
 
 export interface itemInterface {
     id: number,
+    projectId: number
     statusId: number,
     type: "Bug Fix" | "Feature" | "Prototype" | "Documentation" | "Other",
     content: string,
@@ -28,6 +29,7 @@ export interface taskState {
 const data: itemInterface[] = [
     {
         id: 1,
+        projectId: 1,
         statusId: 1,
         type: "Bug Fix",
         content: "Fill out human interest distribution form",
@@ -35,6 +37,7 @@ const data: itemInterface[] = [
     },
     {
         id: 2,
+        projectId: 1,
         statusId: 1,
         type: "Bug Fix",
         content: "Get an anniversary gift",
@@ -42,6 +45,7 @@ const data: itemInterface[] = [
     },
     {
         id: 3,
+        projectId: 1,
         type: "Bug Fix",
         statusId: 1,
         content: "Call the bank to talk about investments",
@@ -49,6 +53,7 @@ const data: itemInterface[] = [
     },
     {
         id: 4,
+        projectId: 1,
         statusId: 1,
         type: "Bug Fix",
         content: "Finish reading Intro to UI/UX",
@@ -66,7 +71,7 @@ export const statuses: statusInterface[] = [
         name: "in progress",
     },
     {
-        id: 4,
+        id: 3,
         name: "in review",
 
     },
@@ -82,7 +87,7 @@ export const getTasks = createAsyncThunk<
     number,
     { rejectValue: void }
 >(
-    'api/projects',
+    'api/tasks',
     async (id, { rejectWithValue }) => {
         try {
             // const { data } = await axios.get(`${API_URL}/api/tasks/${id}`);
@@ -101,7 +106,6 @@ const initialState: taskState = {
     tasks: [],
     statuses: [],
     isFetching: true
-
 }
 
 
@@ -109,6 +113,26 @@ export const taskSlice = createSlice({
     name: 'taskReducer',
     initialState,
     reducers: {
+        onDrop: (state, action: PayloadAction<[number, number, number]>) => {
+            const [id, dragStatusId, statusId] = action.payload
+            state.tasks = state.tasks.map((item: itemInterface) => {
+                if (item.id === id && item.statusId === dragStatusId) {
+                    item.statusId = statusId
+
+                }
+                return item
+            })
+        },
+        moveItem: (state, action: PayloadAction<[number, number]>) => {
+            const [dragIndex, hoverIndex] = action.payload
+            const task: itemInterface = state.tasks[dragIndex]
+            const hoverTask: itemInterface = state.tasks[hoverIndex]
+            const newItems: itemInterface[] = state.tasks.filter((i, idx) => idx !== dragIndex)
+            task.statusId = hoverTask.statusId
+            state.tasks = [...newItems.slice(0, hoverIndex), task, ...newItems.slice(hoverIndex)]
+
+        }
+
 
     },
     extraReducers: (builder) => {
@@ -131,5 +155,6 @@ export const taskSlice = createSlice({
 
 
 //export const { create, update, deleteP } = projectSlice.actions
+export const { onDrop, moveItem } = taskSlice.actions
 
 export default taskSlice.reducer
