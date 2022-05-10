@@ -96,6 +96,9 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
 
+
+
+
     },
     extraReducers: (builder) => {
 
@@ -163,5 +166,6 @@ export const authSlice = createSlice({
 
 
 // export const { setUser } = authSlice.actions
+
 
 export default authSlice.reducer

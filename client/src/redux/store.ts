@@ -1,15 +1,27 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import authReducer from './slices/authSlice'
 import projectReducer from './slices/projectSlice'
 import taskReducer from './slices/taskSlice'
 
+const combinedReducer = combineReducers({
+    auth: authReducer,
+    project: projectReducer,
+    task: taskReducer,
+});
+
+const rootReducer = (state: any, action: any) => {
+    console.log(state)
+    if (action.type === 'auth/logout/fulfilled') {
+        state.project = undefined
+        state.task = undefined
+
+    }
+    return combinedReducer(state, action);
+};
+
 
 export const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        project: projectReducer,
-        task: taskReducer,
-    },
+    reducer: rootReducer,
     devTools: true,
 })
 

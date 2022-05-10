@@ -1,10 +1,28 @@
 const db = require("./db");
-const { User, Project } = require("./models");
+const { User, Project, Task, User_Project, Status } = require("./models");
 
 
 async function seed() {
   await db.sync({ force: true });
   console.log("db synced!");
+
+
+  await Status.create({
+    name: "open"
+  })
+
+  await Status.create({
+    name: "in progress"
+  })
+
+  await Status.create({
+    name: "in review"
+  })
+
+  await Status.create({
+    name: "done"
+  })
+
 
   const shaahid = await User.create({
     username: "shaahid",
@@ -13,6 +31,8 @@ async function seed() {
     photoUrl:
       "https://res.cloudinary.com/dmlvthmqr/image/upload/v1607914467/messenger/thomas_kwzerk.png",
   });
+
+  /*
 
   // new Date().toISOString()
   const projectOne = await Project.create({
@@ -30,11 +50,28 @@ async function seed() {
   await shaahid.addProject(projectOne)
   console.log(shaahid)
 
+  const status = await Status.create({
+    projectId: projectOne.id,
+    name: "done"
+  })
 
-  
+  const task1 = await Task.create({
+    statusId: status.id,
+    projectId: projectOne.id,
+    type: "Bug",
+    content: "ABC",
+    userId: shaahid.id
+  })
 
 
-  
+
+
+
+  */
+
+
+
+
 
 
 

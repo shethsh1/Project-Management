@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import {
     Box,
     Typography,
@@ -30,7 +30,7 @@ export default function Card({ index, task }: props) {
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "item",
-        item: { id: task.id, dragStatusId: task.statusId, index: index },
+        item: { id: task.id, dragStatusId: task.statusId, index: index, projectId: task.projectId },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -50,9 +50,6 @@ export default function Card({ index, task }: props) {
             boxSizing: 'border-box',
             cursor: 'pointer',
             marginTop: '0.75rem',
-
-
-
         }}>
 
             <Box sx={{
@@ -81,11 +78,13 @@ export default function Card({ index, task }: props) {
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
 
+
+
                     <Typography sx={{ fontSize: '.85rem', fontWeight: 900 }}>
-                        {user.username}
+
                     </Typography>
 
-                    <Avatar sx={{ width: 24, height: 24 }} alt="Remy Sharp" src={user.photoUrl} />
+                    {/* <Avatar sx={{ width: 24, height: 24 }} alt="Remy Sharp" src={user.photoUrl} /> */}
                 </Box>
 
             </Box>

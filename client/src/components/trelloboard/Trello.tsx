@@ -14,6 +14,7 @@ type props = {
 
 export default function Trello({ id }: props) {
     const [fetching, setFetching] = useState(true)
+    const [replyForm, setReplyForm] = useState<number | null>(null)
     const { tasks, statuses } = useAppSelector(state => state.task)
     const dispatch = useAppDispatch()
 
@@ -26,6 +27,11 @@ export default function Trello({ id }: props) {
         fetch()
 
     }, [])
+
+    const setReplyFormStatus = (statusId: number | null) => {
+        setReplyForm(statusId)
+    }
+
 
 
 
@@ -53,7 +59,7 @@ export default function Trello({ id }: props) {
             }}>
                 {statuses.map((status: statusInterface) => {
                     const atasks = tasks.map((task, idx) => { return { task, idx } })
-                    return <Column key={status.id} tasks={atasks} title={status.name} statusId={status.id} />
+                    return <Column projId={id} key={status.id} tasks={atasks} title={status.name} statusId={status.id} replyForm={replyForm} setReplyFormStatus={setReplyFormStatus} />
                 })}
 
 
