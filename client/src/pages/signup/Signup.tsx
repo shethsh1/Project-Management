@@ -18,79 +18,6 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { authRegister } from '../../redux/slices/authSlice'
 import type { user as userType } from '../../redux/slices/authSlice'
 
-
-
-const classes = {
-  bgContainer: {
-    display: 'block',
-
-    "@media (max-width: 959px)": {
-      display: 'none'
-
-    }
-
-  },
-
-
-
-  formContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-
-  },
-
-
-
-  textFieldContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: '100%',
-    maxWidth: '60%',
-    marginBottom: '80px',
-    "@media (max-width: 1400px)": {
-      width: '100%',
-      maxWidth: '70%'
-    },
-    "@media (max-width: 959px)": {
-      width: '100%',
-      maxWidth: '50%'
-    }
-
-
-  },
-
-  title: {
-    fontWeight: 'bold',
-    marginBottom: '32px',
-    whiteSpace: 'nowrap'
-  },
-
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '32px'
-  },
-
-  submitButton: {
-    paddingLeft: '64px',
-    paddingRight: '64px',
-    paddingTop: '16px',
-    paddingBottom: '16px'
-
-  },
-
-  forgot: {
-    cursor: 'pointer',
-    fontSize: '15px',
-    fontWeight: 'bold'
-
-  }
-
-};
-
 const Signup = () => {
 
   const navigate = useNavigate()
@@ -107,7 +34,7 @@ const Signup = () => {
   }
 
   useEffect(() => {
-    if(user && (user as userType).id) {
+    if (user && (user as userType).id) {
       navigate("/")
     }
 
@@ -123,19 +50,43 @@ const Signup = () => {
     }}>
 
       <Grid item md={5} sx={{
-          display: {xs: 'none', md: 'block'}
+        display: { xs: 'none', md: 'block' }
       }}>
         <Sidebackground />
       </Grid>
 
-      <Grid container item xs={12} md={7} sx={classes.formContainer}>
+      <Grid container item xs={12} md={7} sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}>
 
 
-          <LinksHeader text="Already have an account?" link="/login" buttonText="Login" />
+        <LinksHeader text="Already have an account?" link="/login" buttonText="Login" />
 
-        <Box component="form" sx={classes.textFieldContainer} onSubmit={onSubmit}>
+        <Box component="form" sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          width: '100%',
+          maxWidth: '60%',
+          marginBottom: '80px',
+          "@media (max-width: 1400px)": {
+            width: '100%',
+            maxWidth: '70%'
+          },
+          "@media (max-width: 959px)": {
+            width: '100%',
+            maxWidth: '50%'
+          }
+        }} onSubmit={onSubmit}>
 
-          <Typography variant="h4" gutterBottom sx={classes.title}>
+          <Typography variant="h4" gutterBottom sx={{
+            fontWeight: 'bold',
+            marginBottom: '32px',
+            whiteSpace: 'nowrap'
+          }}>
             Create an account.
           </Typography>
 
@@ -185,8 +136,17 @@ const Signup = () => {
           </FormControl>
 
 
-          <Box sx={classes.buttonContainer}>
-            <Button type="submit" color="primary" variant="contained" size="large" sx={classes.submitButton}>
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '32px'
+          }}>
+            <Button type="submit" color="primary" variant="contained" size="large" sx={{
+              paddingLeft: '64px',
+              paddingRight: '64px',
+              paddingTop: '16px',
+              paddingBottom: '16px'
+            }}>
               Signup
             </Button>
           </Box>

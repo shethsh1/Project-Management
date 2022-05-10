@@ -29,7 +29,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 function CircularProgressWithLabel(props: { value: number }) {
-    console.log(`value is ${props.value}`)
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
             <CircularProgress variant="determinate" {...props} />
@@ -75,11 +74,6 @@ export default function ProgressCell({ progress, id }: props) {
             return
         }
 
-
-        console.log(newProgress)
-
-
- 
         const updatedProj: updatedProjectObj = {
             projectId: id,
             updateVariables: {
