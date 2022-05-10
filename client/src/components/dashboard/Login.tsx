@@ -20,13 +20,11 @@ export default function Login() {
         setOpen(false);
     };
 
-
     return (
         <>
             <Button sx={{ color: 'white' }} onClick={handleClickOpen}>
                 Login
             </Button>
-
         </>
 
     )
