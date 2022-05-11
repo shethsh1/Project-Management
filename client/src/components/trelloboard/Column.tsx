@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
     Box,
     Typography,
@@ -26,12 +26,13 @@ type props = {
 
 export default function Column({ title, tasks, statusId, setReplyFormStatus, replyForm, projId }: props) {
     const dispatch = useAppDispatch()
+    const columnRef: any = useRef(null)
 
     const handleClickOpen = () => {
         setReplyFormStatus(statusId)
     };
 
-    const [_, drop]: any = useDrop({
+    const [, drop]: any = useDrop({
         accept: 'item',
         canDrop: ({ dragStatusId }: { dragStatusId: number }, monitor) => {
             return dragStatusId !== statusId
@@ -41,8 +42,10 @@ export default function Column({ title, tasks, statusId, setReplyFormStatus, rep
         }
     })
 
+    columnRef(drop)
+
     return (
-        <Box ref={drop} sx={{
+        <Box ref={columnRef} sx={{
             display: 'flex',
             flexDirection: 'column',
             width: "18rem",
@@ -75,6 +78,7 @@ export default function Column({ title, tasks, statusId, setReplyFormStatus, rep
                 if (task.statusId === statusId) {
                     return <Card index={idx} key={task.id} task={task} />
                 }
+                return <></>
             }
             )}
 

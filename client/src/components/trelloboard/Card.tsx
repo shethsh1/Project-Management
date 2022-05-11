@@ -62,7 +62,7 @@ export default function Card({ index, task }: props) {
         }
 
 
-    }, [task?.userId])
+    }, [task?.userId, dispatch])
 
 
     const [{ isDragging }, drag] = useDrag(() => ({

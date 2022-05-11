@@ -1,32 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React from 'react'
 import {
     Typography,
-    TablePagination,
-    TableFooter,
-    IconButton,
-    Box,
-    Button,
     Menu,
     MenuItem
 } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks'
-import type { user } from '../../redux/slices/authSlice'
-import CreateModalForm from './CreateModalForm'
+import { useAppDispatch } from '../../redux/hooks'
 import type { updatedProjectObj } from '../../redux/slices/projectSlice'
 import { updateProject } from '../../redux/slices/projectSlice'
-import moment from 'moment';
 
 type props = {
-    status: "Not Active" | "In Progress" | "Completed" ,
+    status: "Not Active" | "In Progress" | "Completed",
     id: number
 }
 
@@ -35,15 +18,15 @@ export default function StatusCell({ status, id }: props) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    const updateValue = (val : "Not Active" | "In Progress" | "Completed", id : number) => {
-        
-        if(val === status) {
+    const updateValue = (val: "Not Active" | "In Progress" | "Completed", id: number) => {
+
+        if (val === status) {
             handleClose()
             return
         }
 
-        const updatedProj : updatedProjectObj = {
-            projectId : id,
+        const updatedProj: updatedProjectObj = {
+            projectId: id,
             updateVariables: {
                 status: val
             }
@@ -51,7 +34,7 @@ export default function StatusCell({ status, id }: props) {
 
         dispatch(updateProject(updatedProj))
         handleClose()
-        
+
 
     }
 

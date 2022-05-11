@@ -69,13 +69,6 @@ app.use(express.static(__dirname + "/../client/build"));
 
 
 app.get("*", (req, res) => {
-  // check for page routes that we expect in the frontend to provide correct status code.
-  const goodPageRoutes = ["/", "/project", "/login", "/signup"];
-  if (!goodPageRoutes.includes(req.url)) {
-    // if url not in expected page routes, set status to 404.
-    res.status(404);
-  }
-
   // send index.html
   res.sendFile(__dirname + "/../client/build/index.html");
 });

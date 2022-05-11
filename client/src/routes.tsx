@@ -35,7 +35,7 @@ export default function Routes() {
             setErrorMessage((user as error).error);
             setSnackBarOpen(true);
         }
-    }, [(user as error)?.error]);
+    }, [user]);
 
     if (isFetching) {
         return <div>Loading...</div>
