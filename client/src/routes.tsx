@@ -13,8 +13,6 @@ import { Navigate } from 'react-router-dom';
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-
-
 export default function Routes() {
 
     const { user, isFetching } = useAppSelector(state => state.auth)
@@ -26,7 +24,7 @@ export default function Routes() {
     useEffect(() => {
 
         const token = async () => {
-            await dispatch(tokenLogin("a")).unwrap()
+            await dispatch(tokenLogin()).unwrap()
         }
         token()
 
@@ -39,15 +37,9 @@ export default function Routes() {
         }
     }, [(user as error)?.error]);
 
-
-
     if (isFetching) {
         return <div>Loading...</div>
     }
-
-
-
-
 
     return (
         <>
@@ -61,7 +53,6 @@ export default function Routes() {
 
             <DndProvider backend={HTML5Backend}>
                 <DomRoutes>
-
                     {(user as user)?.id ?
                         <>
                             <Route path="/" element={<Dashboard />}></Route>
@@ -73,7 +64,6 @@ export default function Routes() {
                         </>
 
                     }
-
                     {
                         (user as user)?.id ?
 
@@ -82,9 +72,6 @@ export default function Routes() {
                             : <Route path='*' element={<Navigate to='/signup' />} />
 
                     }
-
-
-
 
                 </DomRoutes>
             </DndProvider>

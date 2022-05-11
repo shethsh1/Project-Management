@@ -13,7 +13,6 @@ import type { user } from '../../redux/slices/authSlice'
 import { authLogout } from '../../redux/slices/authSlice'
 import { Main, DrawerHeader } from './StyledComponents'
 
-
 export default function Dashboard() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -25,7 +24,6 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
 
   return (
     <Box sx={{ display: 'flex' }}>

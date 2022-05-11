@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,22 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {
-  Typography,
   TablePagination,
   TableFooter,
-  IconButton,
-  Box,
-  Button,
-  Menu,
-  MenuItem
 } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import { useAppSelector, useAppDispatch } from '../../redux/hooks'
-import type { user } from '../../redux/slices/authSlice'
-import CreateModalForm from './CreateModalForm'
 import type { projectObj } from '../../redux/slices/projectSlice'
-import moment from 'moment';
 import PriorityCell from './PriorityCell'
 import StatusCell from './StatusCell'
 import ProgressCell from './ProgressCell'
@@ -31,15 +19,13 @@ import DateCell from './DateCell'
 import UpdateFavorites from './UpdateFavorites'
 import TableMenu from './TableMenu'
 
-
 type props = {
   projects: projectObj[]
 }
 
 export default function ProjectTable({ projects }: props) {
-  console.log(projects)
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -50,17 +36,12 @@ export default function ProjectTable({ projects }: props) {
   };
 
   const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(parseInt(event.target.value, 8));
+    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-
-
   return (
     <>
-
-
-
       <TableContainer component={Paper} sx={{ flex: 1 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -127,6 +108,7 @@ export default function ProjectTable({ projects }: props) {
               <TablePagination
 
                 colSpan={6}
+                rowsPerPageOptions={[10, 20, 50]}
                 count={projects.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
@@ -137,10 +119,9 @@ export default function ProjectTable({ projects }: props) {
                   native: true,
                 }}
                 onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </TableRow>
-
-
           </TableFooter>
         </Table>
       </TableContainer>

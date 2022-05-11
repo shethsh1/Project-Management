@@ -5,7 +5,7 @@ import {
     Button
 } from '@mui/material'
 import Column from './Column'
-import type { itemInterface, statusInterface } from '../../redux/slices/taskSlice'
+import type { statusInterface } from '../../redux/slices/taskSlice'
 import { getTasks } from '../../redux/slices/taskSlice'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 
@@ -32,9 +32,6 @@ export default function Trello({ id }: props) {
     const setReplyFormStatus = (statusId: number | null) => {
         setReplyForm(statusId)
     }
-
-
-
 
     if (fetching) {
         return <Box>Loading...</Box>
@@ -66,10 +63,6 @@ export default function Trello({ id }: props) {
                     const atasks = tasks.map((task, idx) => { return { task, idx } })
                     return <Column projId={id} key={status.id} tasks={atasks} title={status.name} statusId={status.id} replyForm={replyForm} setReplyFormStatus={setReplyFormStatus} />
                 })}
-
-
-
-
 
             </Box>
 

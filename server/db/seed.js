@@ -23,15 +23,6 @@ async function seed() {
     name: "done"
   })
 
-
-  const shaahid = await User.create({
-    username: "shaahid",
-    email: "thomas@email.com",
-    password: "123456",
-    photoUrl:
-      "https://res.cloudinary.com/dmlvthmqr/image/upload/v1607914467/messenger/thomas_kwzerk.png",
-  });
-
   /*
 
   // new Date().toISOString()

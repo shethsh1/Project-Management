@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk, current } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import { Dispatch } from 'redux';
 import axios from "axios"
 const API_URL = process.env.REACT_APP_API_HOST_URL || ""
@@ -118,7 +118,7 @@ export const updateProject = (updateProjectObj: updatedProjectObj) => async (dis
     }
 }
 
-export const deleteProject = (id : number) => async (dispatch : Dispatch) => {
+export const deleteProject = (id: number) => async (dispatch: Dispatch) => {
     try {
         await axios.delete(`${API_URL}/api/projects/${id}`)
         dispatch(deleteP(id))

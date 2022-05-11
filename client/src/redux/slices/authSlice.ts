@@ -3,7 +3,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 const API_URL = process.env.REACT_APP_API_HOST_URL || ""
 
-
 export type user = {
     id: number,
     token: string,
@@ -18,7 +17,11 @@ export type error = {
 interface authState {
     user: user | {} | error,
     isFetching: boolean
+}
 
+const initialState: authState = {
+    user: {},
+    isFetching: true
 }
 
 export const authLogin = createAsyncThunk<
@@ -60,7 +63,7 @@ export const authRegister = createAsyncThunk<
 )
 
 
-export const tokenLogin = createAsyncThunk<user, any, { rejectValue: error }>(
+export const tokenLogin = createAsyncThunk<user, void, { rejectValue: error }>(
     'auth/user',
     async (_, { rejectWithValue }) => {
         try {
@@ -86,21 +89,10 @@ export const authLogout = createAsyncThunk<number, number, { rejectValue: error 
     }
 )
 
-
-const initialState: authState = {
-    user: {},
-    isFetching: true
-}
-
 export const authSlice = createSlice({
     name: "authReducer",
     initialState,
-    reducers: {
-
-
-
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
 
         // LOGIN
@@ -121,7 +113,6 @@ export const authSlice = createSlice({
 
         //REGISTER
         builder.addCase(authRegister.fulfilled, (state: authState, action: PayloadAction<user>) => {
-            console.log(action.payload)
             const { id, token } = action.payload
             localStorage.setItem("messenger-token", token)
             state.user = {
@@ -164,8 +155,6 @@ export const authSlice = createSlice({
     }
 })
 
-
-
 export const getUserWithId = (userId: number) => async (): Promise<user | undefined> => {
     try {
         const response = await axios.get(`${API_URL}/api/users/id/${userId}`)
@@ -178,10 +167,5 @@ export const getUserWithId = (userId: number) => async (): Promise<user | undefi
 
     }
 }
-
-
-
-// export const { setUser } = authSlice.actions
-
 
 export default authSlice.reducer

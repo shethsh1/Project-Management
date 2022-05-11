@@ -5,12 +5,9 @@ import {
   Box,
   Button
 } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import type { user } from '../../redux/slices/authSlice'
 import CreateModalForm from '../projecttable/CreateModalForm'
-import type { projectObj } from '../../redux/slices/projectSlice'
 import { getProjects } from '../../redux/slices/projectSlice'
 import CircularProgress from '@mui/material/CircularProgress';
 import ProjectTable from '../projecttable/ProjectTable'
@@ -51,13 +48,8 @@ export default function Home() {
           Welcome back {user.username}
         </Typography>
 
-        <Button onClick={handleClickOpen}>Create new project</Button>
-
-
-
-
+        <Button variant="outlined" onClick={handleClickOpen}>Create new project</Button>
       </Box>
-
 
       {projectFetching ?
 
@@ -73,16 +65,11 @@ export default function Home() {
         </Box>
         :
 
-
-
-
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: 5
         }}>
-
-
 
           <Typography variant="caption" sx={{ opacity: 0.7 }}>
             {projects.length} projects, 3 completed, 0 in progress, 1 not active

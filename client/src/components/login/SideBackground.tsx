@@ -5,9 +5,7 @@ import {
     Paper
 } from '@mui/material';
 
-
 export default function SideBackground() {
-
 
     return (
         <Paper sx={{

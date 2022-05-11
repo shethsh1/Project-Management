@@ -43,11 +43,9 @@ export default function StatusCell({ favorite, id }: props) {
                 favorite: !val
             }
         }
-
         dispatch(updateProject(updatedProj))
 
     }
-
 
     return (
 

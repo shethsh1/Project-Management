@@ -5,15 +5,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box, IconButton, MenuItem } from '@mui/material'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import CloseIcon from '@mui/icons-material/Close';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { createProject } from '../../redux/slices/projectSlice'
 import type { user } from '../../redux/slices/authSlice'
-
-
 
 type props = {
   open: boolean,
@@ -71,8 +69,8 @@ export default function CreateModalForm({ open, handleClose }: props) {
 
 
         <DialogTitle>Create project form</DialogTitle>
-        <IconButton>
-          <HighlightOffIcon />
+        <IconButton onClick={() => closeModal()}>
+          <CloseIcon />
         </IconButton>
       </Box>
       <DialogContent>
@@ -126,9 +124,6 @@ export default function CreateModalForm({ open, handleClose }: props) {
               required
               value={priority}
               onChange={(e: any) => setPriority(e.target.value)}
-
-
-
             >
 
               <MenuItem value="Low">
@@ -179,8 +174,6 @@ export default function CreateModalForm({ open, handleClose }: props) {
               <Button type="submit" sx={{ color: 'green' }}>Create</Button>
               <Button onClick={() => closeModal()} sx={{ color: 'red' }}>Close</Button>
             </Box>
-
-
           </Box>
 
         </Box>
