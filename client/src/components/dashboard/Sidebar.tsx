@@ -19,13 +19,13 @@ export default function Sidebar() {
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button disabled>
                     <ListItemIcon>
                         <StarIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Starred"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button disabled>
                     <ListItemIcon>
                         <CalendarTodayIcon />
                     </ListItemIcon>

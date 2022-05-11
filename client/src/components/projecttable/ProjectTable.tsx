@@ -10,6 +10,11 @@ import Paper from '@mui/material/Paper';
 import {
   TablePagination,
   TableFooter,
+  FormControl,
+  TextField,
+  InputAdornment,
+  IconButton
+
 } from '@mui/material'
 import type { projectObj } from '../../redux/slices/projectSlice'
 import PriorityCell from './PriorityCell'
@@ -18,12 +23,17 @@ import ProgressCell from './ProgressCell'
 import DateCell from './DateCell'
 import UpdateFavorites from './UpdateFavorites'
 import TableMenu from './TableMenu'
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+
 
 type props = {
   projects: projectObj[]
 }
 
 export default function ProjectTable({ projects }: props) {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showClearIcon, setShowClearIcon] = useState("none");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -40,9 +50,49 @@ export default function ProjectTable({ projects }: props) {
     setPage(0);
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setShowClearIcon(event.target.value === "" ? "none" : "flex");
+    setSearchTerm(event.target.value)
+  };
+
+  const handleClick = (): void => {
+    setShowClearIcon('none')
+    setSearchTerm('')
+  };
+
+
+
   return (
     <>
       <TableContainer component={Paper} sx={{ flex: 1 }}>
+
+        <FormControl sx={{ margin: 0, display: 'flex' }}>
+          <TextField
+            size="small"
+            variant="outlined"
+            onChange={handleChange}
+            value={searchTerm}
+            placeholder="Search by title..."
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  style={{ display: showClearIcon }}
+                  onClick={handleClick}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  <ClearIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+        </FormControl>
+
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -58,8 +108,8 @@ export default function ProjectTable({ projects }: props) {
 
           <TableBody>
             {(rowsPerPage > 0
-              ? projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : projects
+              ? projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).filter((row: projectObj) => row.title.includes(searchTerm))
+              : projects.filter((row: projectObj) => row.title.includes(searchTerm))
             ).map((row) => (
               <TableRow key={row.id}>
 

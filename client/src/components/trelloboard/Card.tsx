@@ -51,7 +51,6 @@ export default function Card({ index, task }: props) {
 
         const getTaskUser = async () => {
             setCurUser(await dispatch(getUserWithId(task.userId as number)))
-
         }
 
         if (task.userId != null) {
@@ -105,8 +104,6 @@ export default function Card({ index, task }: props) {
 
                     <MenuItem onClick={() => handleAssign(task.id as number, task.projectId as number)}>
                         {task.userId === user.id ? <span>unassign</span> : <span>assign</span>}
-
-
                     </MenuItem>
                     <MenuItem onClick={() => handleDelete(task.id as number, task.projectId as number)}>delete</MenuItem>
                 </Menu>
@@ -125,8 +122,6 @@ export default function Card({ index, task }: props) {
                             fontSize: '.75rem',
                             p: 0.5,
                             opacity: 0.5,
-
-
                         }}>
                             {task.type}
                         </Box>

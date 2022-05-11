@@ -73,7 +73,6 @@ export default function AddCard({ statusId, projectId, setReplyFormStatus }: pro
             <TextField
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
-                maxRows={4}
                 rows={3}
                 multiline
                 name="content"

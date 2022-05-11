@@ -61,7 +61,15 @@ export default function Trello({ id }: props) {
             }}>
                 {statuses.map((status: statusInterface) => {
                     const atasks = tasks.map((task, idx) => { return { task, idx } })
-                    return <Column projId={id} key={status.id} tasks={atasks} title={status.name} statusId={status.id} replyForm={replyForm} setReplyFormStatus={setReplyFormStatus} />
+                    return <Column
+                        projId={id}
+                        key={status.id}
+                        tasks={atasks}
+                        title={status.name}
+                        statusId={status.id}
+                        replyForm={replyForm}
+                        setReplyFormStatus={setReplyFormStatus}
+                    />
                 })}
 
             </Box>
