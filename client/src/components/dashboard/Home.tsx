@@ -39,18 +39,17 @@ export default function Home() {
       await dispatch(getProjects())
     }
     fetchAll()
-  }, [])
+  }, [dispatch])
 
-  useEffect(() => {
-
+  const updateTotals = () => {
     const totalsCopy = { ...totals }
     totalsCopy.completed = 0
     totalsCopy.inProgress = 0
     totalsCopy.notActive = 0
     for (const o of projects) {
-      if (o.status == "Completed") {
+      if (o.status === "Completed") {
         totalsCopy.completed += 1
-      } else if (o.status == "Not Active") {
+      } else if (o.status === "Not Active") {
         totalsCopy.notActive += 1
       } else {
         totalsCopy.inProgress += 1
@@ -58,6 +57,10 @@ export default function Home() {
     }
     setTotals(totalsCopy)
 
+  }
+
+  useEffect(() => {
+    updateTotals()
   }, [projects])
 
   return (

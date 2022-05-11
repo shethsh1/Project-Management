@@ -42,7 +42,7 @@ export default function Column({ title, tasks, statusId, setReplyFormStatus, rep
         }
     })
 
-    columnRef(drop)
+    drop(columnRef)
 
     return (
         <Box ref={columnRef} sx={{

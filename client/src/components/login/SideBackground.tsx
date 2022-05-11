@@ -31,7 +31,7 @@ export default function SideBackground() {
                 <Typography variant="h4" sx={{
                     position: 'relative'
                 }} align="center">
-                    <img src={'https://res.cloudinary.com/dudegkgw9/image/upload/v1651386691/icons8-project-64_rbfeip.png'} style={{
+                    <img alt="banner" src={'https://res.cloudinary.com/dudegkgw9/image/upload/v1651386691/icons8-project-64_rbfeip.png'} style={{
                         marginBottom: '20px',
                         width: '100px',
                         height: '100px'
