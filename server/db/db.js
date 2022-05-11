@@ -1,7 +1,29 @@
 const Sequelize = require("sequelize");
 
-const db = new Sequelize(process.env.DATABASE_URL || "postgres://postgres:147258369@localhost:5432/postgres", {
-  logging: false
-});
+let db
+if (process.env.DATABASE_URL) {
+
+  db = new Sequelize(process.env.DATABASE_URL, {
+
+    logging: false,
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+
+  });
+
+} else {
+
+  db = new Sequelize("postgres://postgres:147258369@localhost:5432/postgres", {
+
+    logging: false,
+
+  });
+
+}
 
 module.exports = db;

@@ -46,10 +46,12 @@ app.use(function (req, res, next) {
 app.use("/auth", require("./routes/auth"));
 app.use("/api", require("./routes/api"));
 
+/*
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
+*/
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -62,5 +64,21 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json({ error: err });
 });
+
+app.use(express.static(__dirname + "/../client/build"));
+
+
+app.get("*", (req, res) => {
+  // check for page routes that we expect in the frontend to provide correct status code.
+  const goodPageRoutes = ["/", "/project", "/login", "/signup"];
+  if (!goodPageRoutes.includes(req.url)) {
+    // if url not in expected page routes, set status to 404.
+    res.status(404);
+  }
+
+  // send index.html
+  res.sendFile(__dirname + "/../client/build/index.html");
+});
+
 
 module.exports = { app, sessionStore };
