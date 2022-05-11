@@ -36,4 +36,30 @@ router.get("/:username", async (req, res, next) => {
   }
 });
 
+// get user with id
+router.get("/id/:id", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const { id } = req.params;
+
+    const user = await User.findOne({
+      where: {
+        id: id
+      },
+    });
+
+    if (user === null) {
+      return res.sendStatus(403)
+    }
+
+
+    res.status(200).json(user)
+
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

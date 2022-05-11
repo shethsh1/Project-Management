@@ -12,8 +12,7 @@ const combinedReducer = combineReducers({
 const rootReducer = (state: any, action: any) => {
     console.log(state)
     if (action.type === 'auth/logout/fulfilled') {
-        state.project = undefined
-        state.task = undefined
+        state = { ...state, project: undefined, task: undefined }
 
     }
     return combinedReducer(state, action);

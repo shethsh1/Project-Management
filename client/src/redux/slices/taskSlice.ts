@@ -4,6 +4,7 @@ import axios from "axios"
 const API_URL = process.env.REACT_APP_API_HOST_URL || ""
 
 
+
 export interface itemInterface {
     id?: number,
     projectId: number
@@ -85,6 +86,25 @@ export const taskSlice = createSlice({
             state.tasks.push(action.payload)
         },
 
+        deleteTask: (state, action: PayloadAction<[number]>) => {
+            const [taskId] = action.payload
+            state.tasks = state.tasks.filter((item: itemInterface) => item.id !== taskId)
+
+        },
+
+        assignUser: (state, action: PayloadAction<[number, number]>) => {
+            const [taskId, userId] = action.payload
+            state.tasks = state.tasks.map(task => {
+                if (task.id === taskId && task.userId !== userId) {
+                    task.userId = userId
+                } else if (task.id === taskId && task.userId === userId) {
+                    task.userId = undefined
+                }
+                return task
+            })
+
+        },
+
         onDrop: (state, action: PayloadAction<[number, number, number, number]>) => {
             const [id, dragStatusId, statusId, projectId] = action.payload
             moveTasks(id, statusId, projectId)
@@ -131,6 +151,33 @@ export const addTaskToDatabase = (data: itemInterface) => async (dispatch: Dispa
     }
 }
 
-export const { onDrop, addTask } = taskSlice.actions
+
+
+export const deleteTaskFromDatabase = (taskId: number, projectId: number) => async (dispatch: Dispatch) => {
+    try {
+        const data: { data: { taskId: number, projectId: number } } = { data: { taskId, projectId } }
+        await axios.delete(`${API_URL}/api/tasks`, data)
+
+        dispatch(deleteTask([taskId]))
+
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const assignUserDatabase = (taskId: number, projectId: number, userId: number) => async (dispatch: Dispatch) => {
+    try {
+        const data: { taskId: number, projectId: number } = { taskId, projectId }
+        await axios.put(`${API_URL}/api/tasks`, data)
+        dispatch(assignUser([taskId, userId]))
+
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const { onDrop, addTask, deleteTask, assignUser } = taskSlice.actions
 
 export default taskSlice.reducer

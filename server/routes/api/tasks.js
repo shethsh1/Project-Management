@@ -54,7 +54,6 @@ router.post("/", async (req, res, next) => {
 })
 
 // get tasks
-
 router.get("/:projectId", async (req, res, next) => {
     try {
         if (!req.user) {
@@ -95,7 +94,7 @@ router.get("/:projectId", async (req, res, next) => {
     }
 })
 
-// updateTask
+// moveTask
 router.patch("/", async (req, res, next) => {
     try {
         if (!req.user) {
@@ -135,4 +134,99 @@ router.patch("/", async (req, res, next) => {
     }
 })
 
+
+// delete task
+router.delete("/", async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.sendStatus(403)
+        }
+
+        const id = req.user.id
+        const { taskId, projectId } = req.body
+
+        const checkFound = await User_Project.findOne({
+            where: {
+                projectId: projectId,
+                userId: id
+            }
+        })
+
+        if (checkFound === null) {
+            return res.sendStatus(403)
+        }
+
+        const task = await Task.findOne({
+            where: {
+                id: taskId,
+                projectId: projectId
+            }
+        })
+
+        if (task === null) {
+            return res.sendStatus(403)
+        }
+
+        task.destroy()
+
+        res.sendStatus(204)
+
+    } catch (err) {
+        next(err)
+    }
+})
+
+// assign user
+router.put("/", async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.sendStatus(403)
+        }
+
+        const id = req.user.id
+        const { taskId, projectId } = req.body
+
+        const checkFound = await User_Project.findOne({
+            where: {
+                projectId: projectId,
+                userId: id
+            }
+        })
+
+        if (checkFound === null) {
+            return res.sendStatus(403)
+        }
+
+
+        const task = await Task.findOne({
+            where: {
+                id: taskId,
+                projectId: projectId
+            }
+        })
+
+        if (task === null) {
+            return res.sendStatus(403)
+        }
+
+        if (task.userId === id) {
+            task.userId = null
+            task.save()
+            return res.sendStatus(204)
+        } else {
+            task.userId = id
+            task.save()
+            return res.sendStatus(204)
+        }
+
+
+
+
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router;
+
+

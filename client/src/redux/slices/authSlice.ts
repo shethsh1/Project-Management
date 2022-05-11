@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 const API_URL = process.env.REACT_APP_API_HOST_URL || ""
 
+
 export type user = {
     id: number,
     token: string,
@@ -162,6 +163,21 @@ export const authSlice = createSlice({
         })
     }
 })
+
+
+
+export const getUserWithId = (userId: number) => async (): Promise<user | undefined> => {
+    try {
+        const response = await axios.get(`${API_URL}/api/users/id/${userId}`)
+        const data: user = response.data
+        return data
+
+    } catch (err) {
+        console.log(err)
+        return
+
+    }
+}
 
 
 

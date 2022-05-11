@@ -1,17 +1,24 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     Box,
     Typography,
     IconButton,
     Alert,
     AlertTitle,
-    Avatar
+    Avatar,
+    Menu,
+    MenuItem
 } from '@mui/material'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import type { user } from '../../redux/slices/authSlice';
 import { useDrag, useDrop } from "react-dnd";
 import type { itemInterface } from "../../redux/slices/taskSlice"
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { deleteTaskFromDatabase, assignUserDatabase } from '../../redux/slices/taskSlice'
+import type { user as userType } from '../../redux/slices/authSlice'
+import { getUserWithId } from '../../redux/slices/authSlice'
+
 
 
 type props = {
@@ -20,11 +27,54 @@ type props = {
 }
 
 export default function Card({ index, task }: props) {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [curUser, setCurUser] = useState<userType | undefined>(undefined)
+    const open = Boolean(anchorEl);
+    const user = useAppSelector(state => state.auth.user) as userType
 
 
 
-    const user = useAppSelector(state => state.auth.user) as user
+
+
+    const dispatch = useAppDispatch()
     const ref: any = useRef(null)
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDelete = async (taskId: number, projectId: number) => {
+        await dispatch(deleteTaskFromDatabase(taskId, projectId))
+        handleClose()
+    }
+
+    const handleAssign = async (taskId: number, projectId: number) => {
+        await dispatch(assignUserDatabase(taskId, projectId, user.id))
+        handleClose()
+
+    }
+
+    useEffect(() => {
+
+        const getTaskUser = async () => {
+            setCurUser(await dispatch(getUserWithId(task.userId as number)))
+
+        }
+
+        if (task.userId != null) {
+            getTaskUser()
+        }
+
+        if (task.userId == null) {
+            setCurUser(undefined)
+        }
+
+
+    }, [task?.userId])
+
 
 
 
@@ -56,20 +106,52 @@ export default function Card({ index, task }: props) {
                 visibility: isDragging ? 'hidden' : 'visible'
             }}>
 
-                <Typography variant="caption">
-                    <Box component="span" sx={{
-                        backgroundColor: 'rgba(236,72,153)',
-                        fontWeight: 700,
-                        borderRadius: '9999px',
-                        fontSize: '.75rem',
-                        p: 0.5,
-                        opacity: 0.5,
+
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+
+                    <MenuItem onClick={() => handleAssign(task.id as number, task.projectId as number)}>
+                        {task.userId === user.id ? <span>unassign</span> : <span>assign</span>}
 
 
-                    }}>
-                        {task.type}
-                    </Box>
-                </Typography>
+                    </MenuItem>
+                    <MenuItem onClick={() => handleDelete(task.id as number, task.projectId as number)}>delete</MenuItem>
+                </Menu>
+
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%'
+                }}>
+                    <Typography variant="caption">
+                        <Box component="span" sx={{
+                            backgroundColor: 'rgba(236,72,153)',
+                            fontWeight: 700,
+                            borderRadius: '9999px',
+                            fontSize: '.75rem',
+                            p: 0.5,
+                            opacity: 0.5,
+
+
+                        }}>
+                            {task.type}
+                        </Box>
+
+                    </Typography>
+
+                    <IconButton size="small" onClick={handleClick}>
+                        <MoreVertIcon />
+
+                    </IconButton>
+                </Box>
 
 
                 <Typography sx={{ marginTop: '0.75rem', lineHeight: '1.25rem', fontSize: '0.85rem' }}>
@@ -78,13 +160,15 @@ export default function Card({ index, task }: props) {
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
 
+                    {curUser != null &&
+                        <>
+                            <Typography sx={{ fontSize: '.85rem', fontWeight: 900 }}>
+                                {curUser.username}
+                            </Typography>
 
-
-                    <Typography sx={{ fontSize: '.85rem', fontWeight: 900 }}>
-
-                    </Typography>
-
-                    {/* <Avatar sx={{ width: 24, height: 24 }} alt="Remy Sharp" src={user.photoUrl} /> */}
+                            <Avatar sx={{ width: 24, height: 24 }} alt="Remy Sharp" src={curUser.photoUrl} />
+                        </>
+                    }
                 </Box>
 
             </Box>

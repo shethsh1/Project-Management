@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import {
     Typography,
-    Box
+    Box,
+    Button
 } from '@mui/material'
 import Column from './Column'
 import type { itemInterface, statusInterface } from '../../redux/slices/taskSlice'
@@ -49,7 +50,11 @@ export default function Trello({ id }: props) {
         }}>
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
                 Team Project Board
+
+                <Button sx={{ ml: 5 }} disabled component="span" variant="outlined">Add members</Button>
             </Typography>
+
+
 
             <Box sx={{
                 display: 'flex',
