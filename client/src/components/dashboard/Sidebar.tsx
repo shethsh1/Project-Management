@@ -1,34 +1,39 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ListItem, List, ListItemIcon, ListItemText, Divider } from '@mui/material'
-import MailIcon from '@mui/icons-material/Mail';
+
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import StarIcon from '@mui/icons-material/Star';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import PersonIcon from '@mui/icons-material/Person';
+
 
 export default function Sidebar() {
     return (
         <>
             <Divider />
             <List>
-                <ListItem component={Link} to="/" >
+                <ListItem button component={Link} to="/" >
                     <ListItemIcon>
-                        <MailIcon />
+                        <ListAltIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Home"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button disabled>
                     <ListItemIcon>
-                        <MailIcon />
+                        <StarIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Starred"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button disabled>
                     <ListItemIcon>
-                        <MailIcon />
+                        <CalendarTodayIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Upcoming"} />
                 </ListItem>
-                <ListItem button>
+                <ListItem button disabled>
                     <ListItemIcon>
-                        <MailIcon />
+                        <PersonIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Profile"} />
                 </ListItem>

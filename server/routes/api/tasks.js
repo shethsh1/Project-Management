@@ -1,10 +1,7 @@
 const router = require("express").Router();
-const { User } = require("../../db/models");
-const { Project } = require("../../db/models");
 const { Status } = require("../../db/models")
 const { Task } = require("../../db/models")
 const { User_Project } = require("../../db/models");
-const { Op } = require("sequelize");
 
 // create task
 router.post("/", async (req, res, next) => {

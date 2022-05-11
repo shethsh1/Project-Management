@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Grid,
@@ -9,14 +9,11 @@ import {
   FormControl,
   TextField,
   InputAdornment,
-  Divider,
-  Snackbar,
-  Alert
 } from '@mui/material';
 import Sidebackground from '../../components/login/SideBackground'
 import LinksHeader from '../../components/login/LinksHeader'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
-import { authLogin, error, user } from '../../redux/slices/authSlice'
+import { authLogin } from '../../redux/slices/authSlice'
 import type { user as userType } from '../../redux/slices/authSlice'
 
 const Login = () => {
@@ -39,8 +36,6 @@ const Login = () => {
     }
 
   }, [user, navigate])
-
-
 
   return (
     <Grid container sx={{
@@ -136,9 +131,6 @@ const Login = () => {
               Login
             </Button>
           </Box>
-
-
-
 
         </Box>
 

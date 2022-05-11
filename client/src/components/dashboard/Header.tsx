@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toolbar, IconButton, Typography, Avatar, Box } from '@mui/material'
+import { Toolbar, IconButton, Typography, Box } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
@@ -19,8 +19,6 @@ type props = {
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
-
-
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',

@@ -3,23 +3,17 @@ import {
     Box,
     Typography,
     IconButton,
-    Alert,
-    AlertTitle,
     Avatar,
     Menu,
     MenuItem
 } from '@mui/material'
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import type { user } from '../../redux/slices/authSlice';
-import { useDrag, useDrop } from "react-dnd";
+import { useDrag } from "react-dnd";
 import type { itemInterface } from "../../redux/slices/taskSlice"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { deleteTaskFromDatabase, assignUserDatabase } from '../../redux/slices/taskSlice'
 import type { user as userType } from '../../redux/slices/authSlice'
 import { getUserWithId } from '../../redux/slices/authSlice'
-
-
 
 type props = {
     task: itemInterface
@@ -31,10 +25,6 @@ export default function Card({ index, task }: props) {
     const [curUser, setCurUser] = useState<userType | undefined>(undefined)
     const open = Boolean(anchorEl);
     const user = useAppSelector(state => state.auth.user) as userType
-
-
-
-
 
     const dispatch = useAppDispatch()
     const ref: any = useRef(null)
@@ -61,7 +51,6 @@ export default function Card({ index, task }: props) {
 
         const getTaskUser = async () => {
             setCurUser(await dispatch(getUserWithId(task.userId as number)))
-
         }
 
         if (task.userId != null) {
@@ -76,8 +65,6 @@ export default function Card({ index, task }: props) {
     }, [task?.userId])
 
 
-
-
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "item",
         item: { id: task.id, dragStatusId: task.statusId, index: index, projectId: task.projectId },
@@ -85,8 +72,6 @@ export default function Card({ index, task }: props) {
             isDragging: monitor.isDragging(),
         }),
     }));
-
-
 
     drag((ref))
 
@@ -119,8 +104,6 @@ export default function Card({ index, task }: props) {
 
                     <MenuItem onClick={() => handleAssign(task.id as number, task.projectId as number)}>
                         {task.userId === user.id ? <span>unassign</span> : <span>assign</span>}
-
-
                     </MenuItem>
                     <MenuItem onClick={() => handleDelete(task.id as number, task.projectId as number)}>delete</MenuItem>
                 </Menu>
@@ -139,8 +122,6 @@ export default function Card({ index, task }: props) {
                             fontSize: '.75rem',
                             p: 0.5,
                             opacity: 0.5,
-
-
                         }}>
                             {task.type}
                         </Box>
@@ -154,7 +135,7 @@ export default function Card({ index, task }: props) {
                 </Box>
 
 
-                <Typography sx={{ marginTop: '0.75rem', lineHeight: '1.25rem', fontSize: '0.85rem' }}>
+                <Typography sx={{ marginTop: '0.75rem', lineHeight: '1.25rem', fontSize: '0.85rem', wordWrap: 'break-word' }}>
                     {task.content}
                 </Typography>
 

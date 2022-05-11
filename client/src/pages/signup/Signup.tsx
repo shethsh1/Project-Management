@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import {
   Grid,
@@ -7,10 +7,6 @@ import {
   Button,
   FormControl,
   TextField,
-  InputAdornment,
-  Divider,
-  Snackbar,
-  Alert
 } from '@mui/material';
 import Sidebackground from '../../components/login/SideBackground'
 import LinksHeader from '../../components/login/LinksHeader'
@@ -39,9 +35,6 @@ const Signup = () => {
     }
 
   }, [user, navigate])
-
-
-
 
   return (
     <Grid container sx={{

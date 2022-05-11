@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
     Box,
     Typography,
     IconButton,
-    TextField,
-    MenuItem,
-    Button
 } from '@mui/material'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Card from './Card'
@@ -34,7 +31,6 @@ export default function Column({ title, tasks, statusId, setReplyFormStatus, rep
         setReplyFormStatus(statusId)
     };
 
-
     const [_, drop]: any = useDrop({
         accept: 'item',
         canDrop: ({ dragStatusId }: { dragStatusId: number }, monitor) => {
@@ -43,10 +39,7 @@ export default function Column({ title, tasks, statusId, setReplyFormStatus, rep
         drop: ({ id, dragStatusId, projectId }: { id: number, dragStatusId: number, projectId: number }) => {
             dispatch(onDrop([id, dragStatusId, statusId, projectId]))
         }
-
-
     })
-
 
     return (
         <Box ref={drop} sx={{

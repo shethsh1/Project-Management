@@ -1,25 +1,17 @@
 import React, { useState } from 'react'
 import {
     Box,
-    Typography,
-    IconButton,
     TextField,
     MenuItem,
     Button
 } from '@mui/material'
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Card from './Card'
 import { addTaskToDatabase } from '../../redux/slices/taskSlice'
 import { useAppDispatch } from '../../redux/hooks'
-
-
 
 type props = {
     statusId: number,
     projectId: number,
     setReplyFormStatus: (statusId: number | null) => void
-
-
 }
 
 export default function AddCard({ statusId, projectId, setReplyFormStatus }: props) {
@@ -31,11 +23,7 @@ export default function AddCard({ statusId, projectId, setReplyFormStatus }: pro
         event.preventDefault()
         dispatch(addTaskToDatabase({ statusId, projectId, type, content }))
         setReplyFormStatus(null)
-
-
-
     }
-
 
     return (
         <Box component="form" onSubmit={onSubmit} sx={{
@@ -51,8 +39,6 @@ export default function AddCard({ statusId, projectId, setReplyFormStatus }: pro
 
 
         }}>
-
-
 
             <TextField
                 select
@@ -87,7 +73,7 @@ export default function AddCard({ statusId, projectId, setReplyFormStatus }: pro
             <TextField
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
-                maxRows={4}
+                rows={3}
                 multiline
                 name="content"
                 fullWidth
@@ -100,10 +86,6 @@ export default function AddCard({ statusId, projectId, setReplyFormStatus }: pro
             />
 
             <Button type="submit">Add Card</Button>
-
-
-
-
 
         </Box>
     );

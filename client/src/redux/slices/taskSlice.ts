@@ -1,9 +1,7 @@
-import { createSlice, PayloadAction, createAsyncThunk, current } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import { Dispatch } from 'redux';
 import axios from "axios"
 const API_URL = process.env.REACT_APP_API_HOST_URL || ""
-
-
 
 export interface itemInterface {
     id?: number,
@@ -25,17 +23,13 @@ export interface taskState {
     tasks: itemInterface[],
     statuses: statusInterface[],
     isFetching: boolean,
-
-
 }
-
 
 const initialState: taskState = {
     tasks: [],
     statuses: [],
     isFetching: true,
 }
-
 
 const moveTasks = async (taskId: number, statusId: number, projectId: number) => {
     try {
@@ -51,7 +45,6 @@ const moveTasks = async (taskId: number, statusId: number, projectId: number) =>
     }
 }
 
-
 export const getTasks = createAsyncThunk<
     { tasks: itemInterface[], statuses: statusInterface[] },
     number,
@@ -63,19 +56,13 @@ export const getTasks = createAsyncThunk<
             const response = await axios.get(`${API_URL}/api/tasks/${id}`);
             const tasks = response.data.tasks
             const statuses = response.data.statuses
-
             return { tasks, statuses }
 
         } catch (err: any) {
             return rejectWithValue(err.response.data)
         }
     }
-
 )
-
-
-
-
 
 export const taskSlice = createSlice({
     name: 'taskReducer',
@@ -111,47 +98,37 @@ export const taskSlice = createSlice({
             state.tasks = state.tasks.map((item: itemInterface) => {
                 if (item.id === id && item.statusId === dragStatusId) {
                     item.statusId = statusId
-
                 }
                 return item
             })
         },
-
-
-
     },
     extraReducers: (builder) => {
         builder.addCase(getTasks.pending, state => {
             state.isFetching = true
         })
         builder.addCase(getTasks.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.tasks = action.payload.tasks
             state.statuses = action.payload.statuses
             state.isFetching = false
 
         })
         builder.addCase(getTasks.rejected, (state, action) => {
-
+            console.log(action.payload)
         })
     }
 
 })
-
 
 export const addTaskToDatabase = (data: itemInterface) => async (dispatch: Dispatch) => {
     try {
         const response = await axios.post(`${API_URL}/api/tasks`, data)
         const task: itemInterface = response.data.task
         dispatch(addTask(task))
-
-
     } catch (err) {
         console.log(err)
     }
 }
-
-
 
 export const deleteTaskFromDatabase = (taskId: number, projectId: number) => async (dispatch: Dispatch) => {
     try {
@@ -171,8 +148,6 @@ export const assignUserDatabase = (taskId: number, projectId: number, userId: nu
         const data: { taskId: number, projectId: number } = { taskId, projectId }
         await axios.put(`${API_URL}/api/tasks`, data)
         dispatch(assignUser([taskId, userId]))
-
-
     } catch (err) {
         console.log(err)
     }

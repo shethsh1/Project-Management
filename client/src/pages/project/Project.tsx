@@ -1,17 +1,13 @@
 import * as React from 'react';
 
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useParams } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from '../../components/dashboard/Header'
-import Home from '../../components/dashboard/Home'
 import SidebarContainer from '../../components/dashboard/SidebarContainer'
-import Constants from '../../constants/Constants'
 import Trello from '../../components/trelloboard/Trello'
 import { Main, DrawerHeader } from '../dashboard/StyledComponents'
-
-
 
 export default function Project() {
 

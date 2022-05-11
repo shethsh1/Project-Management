@@ -5,15 +5,18 @@ import {
   Box,
   Button
 } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import type { user } from '../../redux/slices/authSlice'
 import CreateModalForm from '../projecttable/CreateModalForm'
-import type { projectObj } from '../../redux/slices/projectSlice'
 import { getProjects } from '../../redux/slices/projectSlice'
 import CircularProgress from '@mui/material/CircularProgress';
 import ProjectTable from '../projecttable/ProjectTable'
+
+type totals = {
+  completed: number,
+  inProgress: number,
+  notActive: number
+}
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -21,6 +24,7 @@ export default function Home() {
   const projects = useAppSelector(state => state.project.projects)
   const projectFetching = useAppSelector(state => state.project.projectFetching)
   const dispatch = useAppDispatch()
+  const [totals, setTotals] = useState<totals>({ completed: 0, inProgress: 0, notActive: 0 })
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,6 +41,25 @@ export default function Home() {
     fetchAll()
   }, [])
 
+  useEffect(() => {
+
+    const totalsCopy = { ...totals }
+    totalsCopy.completed = 0
+    totalsCopy.inProgress = 0
+    totalsCopy.notActive = 0
+    for (const o of projects) {
+      if (o.status == "Completed") {
+        totalsCopy.completed += 1
+      } else if (o.status == "Not Active") {
+        totalsCopy.notActive += 1
+      } else {
+        totalsCopy.inProgress += 1
+      }
+    }
+    setTotals(totalsCopy)
+
+  }, [projects])
+
   return (
     <>
 
@@ -51,13 +74,8 @@ export default function Home() {
           Welcome back {user.username}
         </Typography>
 
-        <Button onClick={handleClickOpen}>Create new project</Button>
-
-
-
-
+        <Button variant="outlined" onClick={handleClickOpen}>Create new project</Button>
       </Box>
-
 
       {projectFetching ?
 
@@ -73,19 +91,14 @@ export default function Home() {
         </Box>
         :
 
-
-
-
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: 5
         }}>
 
-
-
           <Typography variant="caption" sx={{ opacity: 0.7 }}>
-            {projects.length} projects, 3 completed, 0 in progress, 1 not active
+            {projects.length} projects, {totals.completed} completed, {totals.inProgress} in progress, {totals.notActive} not active
           </Typography>
 
           <ProjectTable projects={projects} />

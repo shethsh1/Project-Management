@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -7,18 +7,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import { Link } from 'react-router-dom'
 
 type props = {
     handleLogout: () => void,
     photoUrl: string
 }
 
-export default function AccountMenu({handleLogout, photoUrl} : props) {
+export default function AccountMenu({ handleLogout, photoUrl }: props) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -79,16 +79,16 @@ export default function AccountMenu({handleLogout, photoUrl} : props) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem disabled>
-                <ListItemIcon>
-                    <PersonIcon fontSize="small" /> 
-                </ListItemIcon> 
-                    
+                    <ListItemIcon>
+                        <PersonIcon fontSize="small" />
+                    </ListItemIcon>
+
                     Profile
                 </MenuItem>
-                <MenuItem>
-                <ListItemIcon>
-                    <ContentPasteIcon fontSize="small" /> 
-                </ListItemIcon>
+                <MenuItem component={Link} to="/">
+                    <ListItemIcon>
+                        <ContentPasteIcon fontSize="small" />
+                    </ListItemIcon>
                     My projects
                 </MenuItem>
                 <Divider />
