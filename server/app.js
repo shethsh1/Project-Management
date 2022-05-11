@@ -8,6 +8,7 @@ const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const db = require("./db");
 const { User } = require("./db/models");
+const path = require("path");
 
 // create store for sessions to persist in database
 const sessionStore = new SequelizeStore({ db });
@@ -70,7 +71,8 @@ app.use(express.static(__dirname + "/../client/build"));
 
 app.get("*", (req, res) => {
   // send index.html
-  res.sendFile(__dirname + "/../client/build/index.html");
+  let indexPath = path.join(__dirname, "../client/build/index.html")
+  res.sendFile(indexPath);
 });
 
 

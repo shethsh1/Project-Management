@@ -61,7 +61,7 @@ export default function Home() {
 
   useEffect(() => {
     updateTotals()
-  }, [projects])
+  }, [projects, updateTotals])
 
   return (
     <>

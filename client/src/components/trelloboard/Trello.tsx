@@ -27,7 +27,7 @@ export default function Trello({ id }: props) {
 
         fetch()
 
-    }, [])
+    }, [dispatch, id])
 
     const setReplyFormStatus = (statusId: number | null) => {
         setReplyForm(statusId)
