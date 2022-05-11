@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {
   Typography,
   Box,
@@ -41,11 +41,12 @@ export default function Home() {
     fetchAll()
   }, [dispatch])
 
-  const updateTotals = () => {
-    const totalsCopy = { ...totals }
-    totalsCopy.completed = 0
-    totalsCopy.inProgress = 0
-    totalsCopy.notActive = 0
+  const updateTotals = useCallback(() => {
+    const totalsCopy: { completed: number, inProgress: number, notActive: number } = {
+      completed: 0,
+      inProgress: 0,
+      notActive: 0
+    }
     for (const o of projects) {
       if (o.status === "Completed") {
         totalsCopy.completed += 1
@@ -57,7 +58,7 @@ export default function Home() {
     }
     setTotals(totalsCopy)
 
-  }
+  }, [projects])
 
   useEffect(() => {
     updateTotals()
