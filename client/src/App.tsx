@@ -1,13 +1,12 @@
-// @ts-nocheck
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css'
 import Routes from './routes'
 import axios from 'axios';
 
-axios.interceptors.request.use(async function (config) {
+axios.interceptors.request.use(async function (config: any) {
   const token = localStorage.getItem('messenger-token');
-  config.headers['x-access-token'] = token;
+  config.headers['x-access-token'] = token as string;
   return config;
 });
 
