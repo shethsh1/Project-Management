@@ -70,10 +70,15 @@ app.use(express.static(__dirname + "/../client/build"));
 
 
 app.get("*", (req, res) => {
-  // send index.html
-  let indexPath = path.join(__dirname, "../client/build/index.html")
-  res.sendFile(indexPath);
-});
+  // check for page routes that we expect in the frontend to provide correct status code.
+  const goodPageRoutes = ["/", "/login", "/home"];
+  if (!goodPageRoutes.includes(req.url)) {
+    // if url not in expected page routes, set status to 404.
+    res.status(404);
+  }
 
+  // send index.html
+  res.sendFile(__dirname + "/../client/build/index.html");
+});
 
 module.exports = { app, sessionStore };
