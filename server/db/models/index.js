@@ -3,6 +3,8 @@
 const User = require("./user");
 const Project = require("./project")
 const User_Project = require("./userProject")
+const Task = require("./task")
+const Status = require("./status")
 
 
 
@@ -23,5 +25,7 @@ Conversation.hasMany(Message);
 module.exports = {
   User,
   Project,
-  User_Project
+  User_Project,
+  Task,
+  Status
 };

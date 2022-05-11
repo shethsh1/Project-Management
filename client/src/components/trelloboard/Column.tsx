@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Box,
     Typography,
-    IconButton
+    IconButton,
+    TextField,
+    MenuItem,
+    Button
 } from '@mui/material'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Card from './Card'
@@ -10,6 +13,7 @@ import type { itemInterface } from '../../redux/slices/taskSlice'
 import { useDrop } from "react-dnd";
 import { onDrop } from '../../redux/slices/taskSlice'
 import { useAppDispatch } from '../../redux/hooks'
+import AddCard from './AddCard'
 
 type props = {
     title: string,
@@ -17,19 +21,27 @@ type props = {
         task: itemInterface,
         idx: number
     }[],
-    statusId: number
+    statusId: number,
+    setReplyFormStatus: (statusId: number | null) => void,
+    replyForm: number | null,
+    projId: number
 }
 
-export default function Column({ title, tasks, statusId }: props) {
+export default function Column({ title, tasks, statusId, setReplyFormStatus, replyForm, projId }: props) {
     const dispatch = useAppDispatch()
+
+    const handleClickOpen = () => {
+        setReplyFormStatus(statusId)
+    };
+
 
     const [_, drop]: any = useDrop({
         accept: 'item',
         canDrop: ({ dragStatusId }: { dragStatusId: number }, monitor) => {
             return dragStatusId !== statusId
         },
-        drop: ({ id, dragStatusId }: { id: number, dragStatusId: number }) => {
-            dispatch(onDrop([id, dragStatusId, statusId]))
+        drop: ({ id, dragStatusId, projectId }: { id: number, dragStatusId: number, projectId: number }) => {
+            dispatch(onDrop([id, dragStatusId, statusId, projectId]))
         }
 
 
@@ -55,11 +67,16 @@ export default function Column({ title, tasks, statusId }: props) {
                     {title}
                 </Typography>
 
-                <IconButton>
+                <IconButton onClick={() => handleClickOpen()}>
                     <AddBoxIcon />
                 </IconButton>
 
             </Box>
+
+            {replyForm === statusId &&
+                <AddCard statusId={statusId} projectId={projId} setReplyFormStatus={setReplyFormStatus} />
+            }
+
 
             {tasks.map(({ task, idx }) => {
                 if (task.statusId === statusId) {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import {
     Typography,
-    Box
+    Box,
+    Button
 } from '@mui/material'
 import Column from './Column'
 import type { itemInterface, statusInterface } from '../../redux/slices/taskSlice'
@@ -14,6 +15,7 @@ type props = {
 
 export default function Trello({ id }: props) {
     const [fetching, setFetching] = useState(true)
+    const [replyForm, setReplyForm] = useState<number | null>(null)
     const { tasks, statuses } = useAppSelector(state => state.task)
     const dispatch = useAppDispatch()
 
@@ -26,6 +28,11 @@ export default function Trello({ id }: props) {
         fetch()
 
     }, [])
+
+    const setReplyFormStatus = (statusId: number | null) => {
+        setReplyForm(statusId)
+    }
+
 
 
 
@@ -43,7 +50,11 @@ export default function Trello({ id }: props) {
         }}>
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
                 Team Project Board
+
+                <Button sx={{ ml: 5 }} disabled component="span" variant="outlined">Add members</Button>
             </Typography>
+
+
 
             <Box sx={{
                 display: 'flex',
@@ -53,7 +64,7 @@ export default function Trello({ id }: props) {
             }}>
                 {statuses.map((status: statusInterface) => {
                     const atasks = tasks.map((task, idx) => { return { task, idx } })
-                    return <Column key={status.id} tasks={atasks} title={status.name} statusId={status.id} />
+                    return <Column projId={id} key={status.id} tasks={atasks} title={status.name} statusId={status.id} replyForm={replyForm} setReplyFormStatus={setReplyFormStatus} />
                 })}
 
 

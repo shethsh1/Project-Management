@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const { User } = require("../../db/models");
 const { Project } = require("../../db/models");
+const { Status } = require("../../db/models")
+const { Task } = require("../../db/models")
 const { User_Project } = require("../../db/models");
 const { Op } = require("sequelize");
 
@@ -26,10 +28,13 @@ router.post("/", async (req, res, next) => {
 
     })
 
+
     await User_Project.create({
       projectId: project.id,
       userId: id
     })
+
+
 
     res.status(200).json({ project })
 
@@ -140,9 +145,21 @@ router.delete("/:id", async (req, res, next) => {
       },
     })
 
-    if(check === null) {
+    if (check === null) {
       return res.sendStatus(403)
     }
+
+    await Task.destroy({
+      where: {
+        projectId: projectId
+      }
+    })
+
+    await User_Project.destroy({
+      where: {
+        projectId: projectId
+      }
+    })
 
     await Project.destroy({
       where: {

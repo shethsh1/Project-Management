@@ -4,13 +4,14 @@ import axios from "axios"
 const API_URL = process.env.REACT_APP_API_HOST_URL || ""
 
 
+
 export interface itemInterface {
-    id: number,
+    id?: number,
     projectId: number
     statusId: number,
     type: "Bug Fix" | "Feature" | "Prototype" | "Documentation" | "Other",
     content: string,
-    userId: number,
+    userId?: number,
 
 }
 
@@ -23,75 +24,47 @@ export interface statusInterface {
 export interface taskState {
     tasks: itemInterface[],
     statuses: statusInterface[],
-    isFetching: boolean
+    isFetching: boolean,
+
+
 }
 
-const data: itemInterface[] = [
-    {
-        id: 1,
-        projectId: 1,
-        statusId: 1,
-        type: "Bug Fix",
-        content: "Fill out human interest distribution form",
-        userId: 1
-    },
-    {
-        id: 2,
-        projectId: 1,
-        statusId: 1,
-        type: "Bug Fix",
-        content: "Get an anniversary gift",
-        userId: 1
-    },
-    {
-        id: 3,
-        projectId: 1,
-        type: "Bug Fix",
-        statusId: 1,
-        content: "Call the bank to talk about investments",
-        userId: 1
-    },
-    {
-        id: 4,
-        projectId: 1,
-        statusId: 1,
-        type: "Bug Fix",
-        content: "Finish reading Intro to UI/UX",
-        userId: 1
-    }
-];
 
-export const statuses: statusInterface[] = [
-    {
-        id: 1,
-        name: "open",
-    },
-    {
-        id: 2,
-        name: "in progress",
-    },
-    {
-        id: 3,
-        name: "in review",
+const initialState: taskState = {
+    tasks: [],
+    statuses: [],
+    isFetching: true,
+}
 
-    },
-    {
-        id: 4,
-        name: "done",
+
+const moveTasks = async (taskId: number, statusId: number, projectId: number) => {
+    try {
+        const body = {
+            taskId: taskId,
+            statusId: statusId,
+            projectId: projectId
+        }
+        await axios.patch(`${API_URL}/api/tasks/`, body)
+
+    } catch (err) {
+        console.log(err)
     }
-];
+}
 
 
 export const getTasks = createAsyncThunk<
-    { items: itemInterface[], statuses: statusInterface[] },
+    { tasks: itemInterface[], statuses: statusInterface[] },
     number,
     { rejectValue: void }
 >(
     'api/tasks',
     async (id, { rejectWithValue }) => {
         try {
-            // const { data } = await axios.get(`${API_URL}/api/tasks/${id}`);
-            return { items: data, statuses: statuses }
+            const response = await axios.get(`${API_URL}/api/tasks/${id}`);
+            const tasks = response.data.tasks
+            const statuses = response.data.statuses
+
+            return { tasks, statuses }
 
         } catch (err: any) {
             return rejectWithValue(err.response.data)
@@ -102,19 +75,39 @@ export const getTasks = createAsyncThunk<
 
 
 
-const initialState: taskState = {
-    tasks: [],
-    statuses: [],
-    isFetching: true
-}
 
 
 export const taskSlice = createSlice({
     name: 'taskReducer',
     initialState,
     reducers: {
-        onDrop: (state, action: PayloadAction<[number, number, number]>) => {
-            const [id, dragStatusId, statusId] = action.payload
+
+        addTask: (state, action: PayloadAction<itemInterface>) => {
+            state.tasks.push(action.payload)
+        },
+
+        deleteTask: (state, action: PayloadAction<[number]>) => {
+            const [taskId] = action.payload
+            state.tasks = state.tasks.filter((item: itemInterface) => item.id !== taskId)
+
+        },
+
+        assignUser: (state, action: PayloadAction<[number, number]>) => {
+            const [taskId, userId] = action.payload
+            state.tasks = state.tasks.map(task => {
+                if (task.id === taskId && task.userId !== userId) {
+                    task.userId = userId
+                } else if (task.id === taskId && task.userId === userId) {
+                    task.userId = undefined
+                }
+                return task
+            })
+
+        },
+
+        onDrop: (state, action: PayloadAction<[number, number, number, number]>) => {
+            const [id, dragStatusId, statusId, projectId] = action.payload
+            moveTasks(id, statusId, projectId)
             state.tasks = state.tasks.map((item: itemInterface) => {
                 if (item.id === id && item.statusId === dragStatusId) {
                     item.statusId = statusId
@@ -132,7 +125,8 @@ export const taskSlice = createSlice({
             state.isFetching = true
         })
         builder.addCase(getTasks.fulfilled, (state, action) => {
-            state.tasks = action.payload.items
+            console.log(action.payload)
+            state.tasks = action.payload.tasks
             state.statuses = action.payload.statuses
             state.isFetching = false
 
@@ -145,8 +139,45 @@ export const taskSlice = createSlice({
 })
 
 
+export const addTaskToDatabase = (data: itemInterface) => async (dispatch: Dispatch) => {
+    try {
+        const response = await axios.post(`${API_URL}/api/tasks`, data)
+        const task: itemInterface = response.data.task
+        dispatch(addTask(task))
 
-//export const { create, update, deleteP } = projectSlice.actions
-export const { onDrop } = taskSlice.actions
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+
+export const deleteTaskFromDatabase = (taskId: number, projectId: number) => async (dispatch: Dispatch) => {
+    try {
+        const data: { data: { taskId: number, projectId: number } } = { data: { taskId, projectId } }
+        await axios.delete(`${API_URL}/api/tasks`, data)
+
+        dispatch(deleteTask([taskId]))
+
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const assignUserDatabase = (taskId: number, projectId: number, userId: number) => async (dispatch: Dispatch) => {
+    try {
+        const data: { taskId: number, projectId: number } = { taskId, projectId }
+        await axios.put(`${API_URL}/api/tasks`, data)
+        dispatch(assignUser([taskId, userId]))
+
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const { onDrop, addTask, deleteTask, assignUser } = taskSlice.actions
 
 export default taskSlice.reducer
